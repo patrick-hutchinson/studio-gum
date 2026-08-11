@@ -10,20 +10,12 @@
   column-gap: var(--margin);
   row-gap: var(--margin);
 
-  .gallery {
-    display: grid;
-    grid-column: 1 / span 8;
-    row-gap: var(--margin);
-
-    .galleryMedium {
-      display: block;
-      width: 100%;
-      max-height: var(--content-height);
-      cursor: pointer;
-    }
+  .portrait {
+    grid-column: 1 / span 4;
+    aspect-ratio: 5 / 3;
   }
 
-  .projectInfo {
+  .aboutTextContainer {
     grid-column: 10 / 14;
     position: sticky;
     top: calc(var(--margin) + var(--header-height) + var(--margin));

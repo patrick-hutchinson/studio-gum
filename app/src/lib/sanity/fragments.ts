@@ -44,3 +44,23 @@ export const mediaAssetFragment = `{
     ),
   }
 }`;
+
+export const imageAssetFragment = `{
+  "medium": {
+    "type": "image",
+
+    "_id": file.asset->_id,
+
+    "url": file.asset->url,
+    "extension": file.asset->extension,
+    "mimeType": file.asset->mimeType,
+    
+    "lqip": file.asset->metadata.lqip,
+    "width": file.asset->metadata.dimensions.width,
+    "height": file.asset->metadata.dimensions.height,
+
+    copyright,
+    caption,
+    subcaption,
+  }
+}`;

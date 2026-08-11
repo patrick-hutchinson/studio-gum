@@ -28,7 +28,15 @@ const FullscreenView = ({ activeIndex, gallery, onClose, onNavigate }) => {
   return (
     <div className={styles.fullscreenView} role="dialog" aria-modal="true">
       <button className={`${styles.navigationButton} ${styles.previousButton}`} type="button" onClick={() => onNavigate(-1)}>
-        ←
+        <svg className={styles.arrow} aria-hidden="true" focusable="false" viewBox="0 0 45.329 87.829">
+          <polyline
+            points="44.622 87.122 1.414 43.915 44.622 .707"
+            fill="none"
+            stroke="currentColor"
+            strokeMiterlimit="10"
+            strokeWidth="2"
+          />
+        </svg>
       </button>
 
       <button className={styles.mediaArea} type="button" onClick={onClose}>
@@ -36,10 +44,18 @@ const FullscreenView = ({ activeIndex, gallery, onClose, onNavigate }) => {
       </button>
 
       <button className={`${styles.navigationButton} ${styles.nextButton}`} type="button" onClick={() => onNavigate(1)}>
-        →
+        <svg className={styles.arrow} aria-hidden="true" focusable="false" viewBox="0 0 45.329 87.829">
+          <polyline
+            points=".707 .707 43.915 43.915 .707 87.122"
+            fill="none"
+            stroke="currentColor"
+            strokeMiterlimit="10"
+            strokeWidth="2"
+          />
+        </svg>
       </button>
 
-      <div className={styles.counter}>
+      <div className={styles.counter} typo="h3 bold compensate-bottom">
         {activeIndex + 1}/{gallery.length}
       </div>
     </div>

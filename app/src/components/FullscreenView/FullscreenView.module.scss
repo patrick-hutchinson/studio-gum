@@ -10,6 +10,7 @@
     repeat(8, var(--main-grid-track))
     var(--main-grid-special-track)
     repeat(4, var(--main-grid-track));
+  grid-template-rows: var(--shell-height);
   column-gap: var(--margin);
   padding: var(--margin);
   background: var(--background);
@@ -19,6 +20,8 @@
 .mediaArea {
   display: grid;
   grid-column: 2 / 13;
+  height: var(--shell-height);
+  max-height: var(--shell-height);
   min-width: 0;
   min-height: 0;
   cursor: pointer;
@@ -26,8 +29,8 @@
 
 .fullscreenMedia {
   width: 100%;
-  height: var(--content-height);
-  max-height: var(--content-height);
+  height: var(--shell-height);
+  max-height: var(--shell-height);
 }
 
 .navigationButton {
@@ -35,6 +38,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.arrow {
+  width: 40px;
+  height: 86px;
 }
 
 .previousButton {

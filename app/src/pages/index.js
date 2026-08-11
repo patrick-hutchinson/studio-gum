@@ -81,7 +81,7 @@ function ProjectLink({ project }) {
   return (
     <div ref={projectRef} className={styles.project} onPointerMove={sampleThumbnailColor}>
       <Link href={`/projects/${project.slug.current}`} className={styles.projectLink}>
-        <Media medium={medium} className={styles.thumbnail} />
+        <Media medium={medium} className={styles.thumbnail} objectFit="cover" />
         <ProjectInfo project={project} />
       </Link>
       <canvas ref={canvasRef} className={styles.colorSampler} aria-hidden="true" />

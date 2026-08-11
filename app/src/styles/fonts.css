@@ -33,10 +33,14 @@ h3 p,
 }
 
 /* Font Compensation */
-[typo~="h3"][typo~="compensate"] {
+[typo~="h3"][typo~="compensate-top"] {
   --h3-overshoot: 0.18em;
-
   margin-top: calc(var(--h3-overshoot) * -1);
+}
+
+[typo~="h3"][typo~="compensate-bottom"] {
+  --h3-undershoot: 0.15em;
+  margin-bottom: calc(var(--h3-undershoot) * -1);
 }
 
 [typo~="bold"] {
@@ -50,8 +54,8 @@ h3 p,
 
 @media screen and (min-width: 769px) {
   :root {
-    --fontSize-3: 1.8rem;
-    --lineHeight-3: 2.1rem;
+    --fontSize-3: 1.5rem;
+    --lineHeight-3: 1.6rem;
     --letterSpacing-3: 0;
     ----paragraphSpacing-3: 0rem;
   }

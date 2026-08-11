@@ -4,6 +4,7 @@
   --header-height: 0px;
 
   padding: var(--margin);
+
   display: grid;
   min-height: 100dvh;
   align-content: start;
@@ -32,7 +33,7 @@ header.header {
 }
 
 .gumLogo {
-  --gum-logo-gap: 0px;
+  --gum-logo-gap: 5px;
 
   display: flex;
   flex-direction: column;
@@ -48,4 +49,8 @@ header.header {
   pointer-events: none;
 
   line-height: 1;
+}
+
+.gumLogo[data-animate-gap="true"] {
+  transition: gap 0.5s ease-in-out;
 }

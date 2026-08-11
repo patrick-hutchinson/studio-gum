@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
 import { ThemeProvider } from "next-themes";
 import { DeviceProvider } from "@/context/DeviceContext";
@@ -19,17 +20,17 @@ import "@/styles/fonts.css";
 import styles from "../styles/App.module.scss";
 
 import Header from "@/components/Header/Header";
+import RenderSVG from "@/components/RenderSVG/RenderSVG";
 
 const pageTransitionVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  exit: (scrollY) => ({
+  exit: (pageBox) => ({
     opacity: 0,
     position: "fixed",
-    top: -scrollY,
-    left: 0,
-    right: 0,
-    width: "100%",
+    top: pageBox?.top ?? 0,
+    left: pageBox?.left ?? 0,
+    width: pageBox?.width ?? "100%",
     pointerEvents: "none",
   }),
 };
@@ -40,12 +41,30 @@ export default function App({ Component, pageProps }) {
   const shellRef = useRef(null);
   const headerRef = useRef(null);
   const gumLogoRef = useRef(null);
+  const contentRef = useRef(null);
+  const pageTransitionRef = useRef(null);
+  const layoutAnimationFrameRef = useRef(null);
+  const shouldAnimateLayoutFrameRef = useRef(false);
+  const logoAnimationTimeoutRef = useRef(null);
+  const settledLayoutTimeoutsRef = useRef([]);
 
-  const [exitingScrollY, setExitingScrollY] = useState(0);
+  const [exitingPageBox, setExitingPageBox] = useState(null);
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
-      setExitingScrollY(window.scrollY);
+      const rect = contentRef.current?.getBoundingClientRect() || pageTransitionRef.current?.getBoundingClientRect();
+
+      flushSync(() => {
+        setExitingPageBox(
+          rect
+            ? {
+                top: rect.top,
+                left: rect.left,
+                width: rect.width,
+              }
+            : null,
+        );
+      });
     };
 
     router.events.on("routeChangeStart", handleRouteChangeStart);
@@ -55,67 +74,117 @@ export default function App({ Component, pageProps }) {
     };
   }, [router.events]);
 
-  const updateShellMetrics = useCallback(() => {
+  const updateLayoutMetrics = useCallback((animateLogo = false) => {
     const shell = shellRef.current;
     const header = headerRef.current;
-    if (!shell || !header) return;
+    const logo = gumLogoRef.current;
 
-    shell.style.setProperty("--header-height", `${header.getBoundingClientRect().height}px`);
+    if (shell && header) {
+      shell.style.setProperty("--header-height", `${header.getBoundingClientRect().height}px`);
+    }
+
+    if (!logo) return;
+
+    const letterHeight = Array.from(logo.children).reduce((height, letter) => {
+      return height + letter.getBoundingClientRect().height;
+    }, 0);
+    const logoHeight = logo.getBoundingClientRect().height;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const minGap = 5;
+    const maxGap = Math.max(minGap, (logoHeight - letterHeight) / Math.max(1, logo.children.length - 1));
+    const scrollProgress =
+      animateLogo && maxScroll > 0 ? 0 : maxScroll <= 0 ? 1 : Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+    if (animateLogo) {
+      logo.dataset.animateGap = "true";
+      logo.getBoundingClientRect();
+
+      if (logoAnimationTimeoutRef.current) {
+        window.clearTimeout(logoAnimationTimeoutRef.current);
+      }
+
+      logoAnimationTimeoutRef.current = window.setTimeout(() => {
+        delete logo.dataset.animateGap;
+        logoAnimationTimeoutRef.current = null;
+      }, 500);
+    } else {
+      delete logo.dataset.animateGap;
+
+      if (logoAnimationTimeoutRef.current) {
+        window.clearTimeout(logoAnimationTimeoutRef.current);
+        logoAnimationTimeoutRef.current = null;
+      }
+    }
+
+    logo.style.setProperty("--gum-logo-gap", `${minGap + (maxGap - minGap) * scrollProgress}px`);
   }, []);
 
+  const scheduleLayoutMetricsUpdate = useCallback((animateLogo = false) => {
+    shouldAnimateLayoutFrameRef.current = animateLogo;
+
+    if (layoutAnimationFrameRef.current) return;
+
+    layoutAnimationFrameRef.current = window.requestAnimationFrame(() => {
+      const shouldAnimate = shouldAnimateLayoutFrameRef.current;
+
+      layoutAnimationFrameRef.current = null;
+      shouldAnimateLayoutFrameRef.current = false;
+      updateLayoutMetrics(shouldAnimate);
+    });
+  }, [updateLayoutMetrics]);
+
+  const cancelSettledLayoutMetricsUpdates = useCallback(() => {
+    settledLayoutTimeoutsRef.current.forEach((timeout) => window.clearTimeout(timeout));
+    settledLayoutTimeoutsRef.current = [];
+  }, []);
+
+  const scheduleSettledLayoutMetricsUpdate = useCallback(() => {
+    cancelSettledLayoutMetricsUpdates();
+    scheduleLayoutMetricsUpdate(true);
+    settledLayoutTimeoutsRef.current = [50, 250, 700].map((delay) =>
+      window.setTimeout(() => scheduleLayoutMetricsUpdate(true), delay),
+    );
+  }, [cancelSettledLayoutMetricsUpdates, scheduleLayoutMetricsUpdate]);
+
+  const handleScroll = useCallback(() => {
+    cancelSettledLayoutMetricsUpdates();
+    scheduleLayoutMetricsUpdate(false);
+  }, [cancelSettledLayoutMetricsUpdates, scheduleLayoutMetricsUpdate]);
+
   useEffect(() => {
-    const logo = gumLogoRef.current;
-    if (!logo) return undefined;
+    const resizeObserver = new ResizeObserver(scheduleSettledLayoutMetricsUpdate);
 
-    let animationFrame = null;
+    [shellRef.current, headerRef.current, gumLogoRef.current, contentRef.current].forEach((element) => {
+      if (element) resizeObserver.observe(element);
+    });
 
-    const updateLogoSpacing = () => {
-      animationFrame = null;
-
-      const letterHeight = Array.from(logo.children).reduce((height, letter) => {
-        return height + letter.getBoundingClientRect().height;
-      }, 0);
-      const logoHeight = logo.getBoundingClientRect().height;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const maxGap = Math.max(0, (logoHeight - letterHeight) / Math.max(1, logo.children.length - 1));
-      const scrollProgress = maxScroll <= 0 ? 1 : Math.min(1, Math.max(0, window.scrollY / maxScroll));
-
-      logo.style.setProperty("--gum-logo-gap", `${maxGap * scrollProgress}px`);
-    };
-
-    const scheduleLogoSpacingUpdate = () => {
-      if (animationFrame) return;
-
-      animationFrame = window.requestAnimationFrame(updateLogoSpacing);
-    };
-
-    scheduleLogoSpacingUpdate();
-    window.addEventListener("scroll", scheduleLogoSpacingUpdate, { passive: true });
-    window.addEventListener("resize", scheduleLogoSpacingUpdate);
-    router.events.on("routeChangeComplete", scheduleLogoSpacingUpdate);
+    scheduleSettledLayoutMetricsUpdate();
+    document.fonts?.ready?.then(scheduleSettledLayoutMetricsUpdate);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", scheduleSettledLayoutMetricsUpdate);
+    router.events.on("routeChangeStart", scheduleSettledLayoutMetricsUpdate);
+    router.events.on("routeChangeComplete", scheduleSettledLayoutMetricsUpdate);
 
     return () => {
-      window.removeEventListener("scroll", scheduleLogoSpacingUpdate);
-      window.removeEventListener("resize", scheduleLogoSpacingUpdate);
-      router.events.off("routeChangeComplete", scheduleLogoSpacingUpdate);
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", scheduleSettledLayoutMetricsUpdate);
+      router.events.off("routeChangeStart", scheduleSettledLayoutMetricsUpdate);
+      router.events.off("routeChangeComplete", scheduleSettledLayoutMetricsUpdate);
 
-      if (animationFrame) {
-        window.cancelAnimationFrame(animationFrame);
+      if (layoutAnimationFrameRef.current) {
+        window.cancelAnimationFrame(layoutAnimationFrameRef.current);
+        layoutAnimationFrameRef.current = null;
       }
+
+      if (logoAnimationTimeoutRef.current) {
+        window.clearTimeout(logoAnimationTimeoutRef.current);
+        logoAnimationTimeoutRef.current = null;
+      }
+
+      cancelSettledLayoutMetricsUpdates();
     };
-  }, [router.events]);
-
-  useEffect(() => {
-    updateShellMetrics();
-
-    window.addEventListener("resize", updateShellMetrics);
-    router.events.on("routeChangeComplete", updateShellMetrics);
-
-    return () => {
-      window.removeEventListener("resize", updateShellMetrics);
-      router.events.off("routeChangeComplete", updateShellMetrics);
-    };
-  }, [router.events, updateShellMetrics]);
+  }, [cancelSettledLayoutMetricsUpdates, handleScroll, router.events, scheduleSettledLayoutMetricsUpdate]);
 
   return (
     <>
@@ -125,30 +194,33 @@ export default function App({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {site.faviconUrl ? <link rel="icon" href={site.faviconUrl} /> : null}
       </Head>
-      <ThemeProvider attribute="data-theme" enableSystem={false} forcedTheme="light">
+      <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={false} themes={["light", "yellow"]}>
         <ViewportProvider>
           <DeviceProvider>
             <div ref={shellRef} className={styles.shell}>
               <Header ref={headerRef} className={styles.header} site={site} />
-              <Menu />
+              {/* <Menu /> */}
 
-              <div ref={gumLogoRef} className={styles.gumLogo} typo="h3">
-                <span>G</span>
-                <span>U</span>
-                <span>M</span>
+              <div ref={gumLogoRef} className={styles.gumLogo} typo="h3 bold compensate">
+                <RenderSVG text="G" />
+                <RenderSVG text="U" />
+                <RenderSVG text="M" />
               </div>
 
-              <div className={`${styles.content} pageTransitionRoot`}>
+              <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
                 <MarginDebugOverlay />
-                <AnimatePresence custom={exitingScrollY} initial={false}>
+
+                <AnimatePresence custom={exitingPageBox} initial={false}>
                   <motion.div
                     animate="animate"
                     className="pageTransition"
-                    custom={exitingScrollY}
+                    custom={exitingPageBox}
                     exit="exit"
                     initial="initial"
                     key={router.asPath}
-                    transition={{ duration: 1, ease: "easeInOut" }}
+                    onAnimationComplete={scheduleSettledLayoutMetricsUpdate}
+                    ref={pageTransitionRef}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
                     variants={pageTransitionVariants}
                   >
                     <Component {...pageProps} />

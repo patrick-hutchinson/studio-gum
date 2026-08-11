@@ -1,5 +1,6 @@
 import type {StructureResolver} from 'sanity/structure'
 import {DashboardIcon} from '@sanity/icons/Dashboard'
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {pages} from './schemaTypes/pages'
 
 // Define singleton document IDs here
@@ -7,9 +8,9 @@ const singletonTypes = ['site', ...pages.map((page) => page.name)]
 const definitions = ['category']
 
 // Add other types you want to hide from Desk here
-const hiddenTypes = [...singletonTypes, ...definitions, 'mux.videoAsset']
+const hiddenTypes = [...singletonTypes, ...definitions, 'project', 'press', 'mux.videoAsset']
 
-export const structure: StructureResolver = (S) =>
+export const structure: StructureResolver = (S, context) =>
   S.list()
     .title('Content')
     .items([
@@ -26,6 +27,22 @@ export const structure: StructureResolver = (S) =>
           .title(page.title || page.name)
           .child(S.document().schemaType(page.name).documentId(page.name)),
       ),
+
+      S.divider(),
+
+      orderableDocumentListDeskItem({
+        type: 'project',
+        title: 'Projects',
+        S,
+        context,
+      }),
+
+      orderableDocumentListDeskItem({
+        type: 'press',
+        title: 'Press',
+        S,
+        context,
+      }),
 
       S.divider(),
 

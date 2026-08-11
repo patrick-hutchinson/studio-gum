@@ -1,5 +1,13 @@
 import { getPreviewClient, getProductionClient } from "./client";
-import { projectQuery, projectSlugsQuery, projectsQuery, siteQuery } from "./queries";
+import {
+  projectQuery,
+  projectSlugsQuery,
+  projectsQuery,
+  siteQuery,
+  aboutPageQuery,
+  pressQuery,
+  contactPageQuery,
+} from "./queries";
 
 export function getSanityClient() {
   const isProduction = process.env.VERCEL_ENV === "production";
@@ -31,10 +39,28 @@ export async function getSite() {
   return normalizeSite(site);
 }
 
+export async function getAboutPage() {
+  const aboutPage = await getSanityClient().fetch(aboutPageQuery);
+
+  return aboutPage || [];
+}
+
+export async function getContactPage() {
+  const contactPage = await getSanityClient().fetch(contactPageQuery);
+
+  return contactPage || [];
+}
+
 export async function getProjects() {
   const projects = await getSanityClient().fetch(projectsQuery);
 
   return projects || [];
+}
+
+export async function getPress() {
+  const press = await getSanityClient().fetch(pressQuery);
+
+  return press || [];
 }
 
 export async function getProject(slug) {

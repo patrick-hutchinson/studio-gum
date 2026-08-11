@@ -24,7 +24,7 @@ export default function ProjectPage({ project }) {
 
   const ProjectCredits = () => {
     return (
-      <ul className={styles.projectCredits} typo="h3">
+      <ul className={styles.projectCredits} typo="h3 compensate-bottom">
         {project.credits?.map((credit) => {
           return (
             <li className={styles.creditContainer}>
@@ -58,8 +58,10 @@ export default function ProjectPage({ project }) {
         ))}
       </section>
       <section className={styles.projectInfo}>
-        <div typo="bold">{project.title}</div>
-        <Text text={project.description} typo="h3" />
+        <div>
+          <div typo="h3 bold compensate-top">{project.title}</div>
+          <Text text={project.description} typo="h3" />
+        </div>
 
         <ProjectCredits />
       </section>

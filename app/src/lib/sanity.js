@@ -1,1 +1,1 @@
-export { getProject, getProjectSlugs, getProjects, getSite } from "./sanity/fetch";
+export { getProject, getProjectSlugs, getProjects, getSite, getAboutPage, getPress, getContactPage } from "./sanity/fetch";

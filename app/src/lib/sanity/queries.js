@@ -1,4 +1,4 @@
-import { mediaAssetFragment } from "./fragments";
+import { mediaAssetFragment, imageAssetFragment } from "./fragments";
 
 export const siteQuery = `*[_type=="site"][0]{
   title,
@@ -15,6 +15,19 @@ export const siteQuery = `*[_type=="site"][0]{
     platform,
     link
   },
+}`;
+
+export const aboutPageQuery = `*[_type=="aboutPage"][0]{
+  lead,
+  credits[]{
+    role,
+    entries
+  },
+  portrait[0] ${mediaAssetFragment},
+}`;
+
+export const contactPageQuery = `*[_type=="contactPage"][0]{
+  lead,
 }`;
 
 const projectFields = `{
@@ -34,6 +47,12 @@ const projectFields = `{
   gallery[] ${mediaAssetFragment},
   link,
   slug
+}`;
+
+export const pressQuery = `*[_type=="press"] | order(title asc) {
+  _id,
+  _type,
+  cover ${imageAssetFragment}
 }`;
 
 export const projectsQuery = `*[_type=="project"] | order(title asc) ${projectFields}`;

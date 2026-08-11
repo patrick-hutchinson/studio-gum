@@ -2,7 +2,7 @@ header.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  z-index: 100;
   text-box-trim: trim-both;
 
   height: fit-content;
@@ -12,4 +12,8 @@ header.header {
   nav {
     text-box-trim: trim-both;
   }
+}
+
+.activeLink {
+  color: var(--focus);
 }

@@ -8,6 +8,7 @@ import {mediaAsset} from './types/media/mediaAsset'
 import {portableText} from './types/portableText'
 import {link} from './types/link'
 import {gallery} from './types/media/gallery'
+import {press} from './press'
 
 export const schemaTypes = [
   site,
@@ -19,4 +20,5 @@ export const schemaTypes = [
   gallery,
   portableText,
   link,
+  press,
 ]
