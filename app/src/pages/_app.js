@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ThemeProvider } from "next-themes";
 import { DeviceProvider } from "@/context/DeviceContext";
@@ -37,6 +37,8 @@ const pageTransitionVariants = {
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const site = pageProps.site || {};
+  const shellRef = useRef(null);
+  const headerRef = useRef(null);
   const gumLogoRef = useRef(null);
 
   const [exitingScrollY, setExitingScrollY] = useState(0);
@@ -52,6 +54,14 @@ export default function App({ Component, pageProps }) {
       router.events.off("routeChangeStart", handleRouteChangeStart);
     };
   }, [router.events]);
+
+  const updateShellMetrics = useCallback(() => {
+    const shell = shellRef.current;
+    const header = headerRef.current;
+    if (!shell || !header) return;
+
+    shell.style.setProperty("--header-height", `${header.getBoundingClientRect().height}px`);
+  }, []);
 
   useEffect(() => {
     const logo = gumLogoRef.current;
@@ -95,6 +105,18 @@ export default function App({ Component, pageProps }) {
     };
   }, [router.events]);
 
+  useEffect(() => {
+    updateShellMetrics();
+
+    window.addEventListener("resize", updateShellMetrics);
+    router.events.on("routeChangeComplete", updateShellMetrics);
+
+    return () => {
+      window.removeEventListener("resize", updateShellMetrics);
+      router.events.off("routeChangeComplete", updateShellMetrics);
+    };
+  }, [router.events, updateShellMetrics]);
+
   return (
     <>
       <Head>
@@ -106,8 +128,8 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider attribute="data-theme" enableSystem={false} forcedTheme="light">
         <ViewportProvider>
           <DeviceProvider>
-            <div className={styles.shell}>
-              <Header className={styles.header} site={site} />
+            <div ref={shellRef} className={styles.shell}>
+              <Header ref={headerRef} className={styles.header} site={site} />
               <Menu />
 
               <div ref={gumLogoRef} className={styles.gumLogo} typo="h3">

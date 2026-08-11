@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 
 import { DeviceContext } from "@/context/DeviceContext";
 import Link from "next/link";
 
 import styles from "./Header.module.scss";
 
-const Header = ({ className = "", site }) => {
+const Header = forwardRef(function Header({ className = "", site }, ref) {
   const { isMobile } = useContext(DeviceContext);
   const addressParts = [site?.address?.street, site?.address?.city].filter(Boolean);
   const address = addressParts.join(", ");
@@ -29,10 +29,10 @@ const Header = ({ className = "", site }) => {
     return <nav></nav>;
   };
   return (
-    <header className={`${className} ${styles.header}`} typo="h3">
+    <header ref={ref} className={`${className} ${styles.header}`} typo="h3">
       {isMobile ? <MobileNav /> : <DesktopNav />}
     </header>
   );
-};
+});
 
 export default Header;

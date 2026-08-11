@@ -1,6 +1,7 @@
 .shell {
   --main-grid-track: minmax(0, 1fr);
   --main-grid-special-track: minmax(0, 0.37fr);
+  --header-height: 0px;
 
   padding: var(--margin);
   display: grid;
@@ -18,6 +19,9 @@
 header.header {
   grid-column: 1 / -1 !important;
   grid-row: 1 !important;
+  position: sticky;
+  top: var(--margin);
+  z-index: 3;
 }
 
 .content {
