@@ -1,0 +1,15 @@
+header.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  text-box-trim: trim-both;
+
+  height: fit-content;
+
+  line-height: 1;
+
+  nav {
+    text-box-trim: trim-both;
+  }
+}

@@ -1,0 +1,58 @@
+:root {
+  --fontSize-3: 1.8rem;
+  --lineHeight-3: 2.1rem;
+  --letterSpacing-3: 0;
+  ----paragraphSpacing-3: 0rem;
+}
+
+@font-face {
+  font-family: "MaisonNeue";
+  src: url("../../public/fonts/MaisonNeue-Book.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MaisonNeue";
+  src: url("../../public/fonts/MaisonNeue-Demi.otf") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+h3,
+[typo~="h3"] {
+  font-size: var(--fontSize-3);
+  line-height: var(--lineHeight-3);
+  letter-spacing: var(--letterSpacing-3);
+}
+h3 p,
+[typo~="h3"] p {
+  margin-bottom: var(----paragraphSpacing-3);
+}
+
+/* Font Compensation */
+[typo~="h3"][typo~="compensate"] {
+  --h3-overshoot: 0.18em;
+
+  margin-top: calc(var(--h3-overshoot) * -1);
+}
+
+[typo~="bold"] {
+  font-size: var(--fontSize-3);
+  line-height: var(--lineHeight-3);
+  letter-spacing: var(--letterSpacing-3);
+
+  font-family: "MaisonNeue";
+  font-weight: bold;
+}
+
+@media screen and (min-width: 769px) {
+  :root {
+    --fontSize-3: 1.8rem;
+    --lineHeight-3: 2.1rem;
+    --letterSpacing-3: 0;
+    ----paragraphSpacing-3: 0rem;
+  }
+}

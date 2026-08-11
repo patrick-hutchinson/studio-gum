@@ -1,0 +1,47 @@
+.main {
+  --main-grid-track: minmax(0, 1fr);
+  --main-grid-special-track: minmax(0, 0.37fr);
+
+  display: grid;
+  grid-template-columns:
+    repeat(8, var(--main-grid-track))
+    var(--main-grid-special-track)
+    repeat(4, var(--main-grid-track));
+  column-gap: var(--margin);
+  row-gap: var(--margin);
+
+  .gallery {
+    display: grid;
+    grid-column: 1 / span 8;
+    row-gap: var(--margin);
+
+    .galleryMedium {
+      display: block;
+      width: 100%;
+      max-height: var(--content-height);
+      cursor: pointer;
+    }
+  }
+
+  .projectInfo {
+    grid-column: 10 / 14;
+    position: sticky;
+    top: 0;
+
+    .projectCredits {
+      .creditContainer {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-column-gap: var(--margin);
+
+        .creditRole {
+          grid-column: 1 / 2;
+        }
+
+        .creditEntries {
+          grid-column: 2 / 4;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+:root {
+  --margin-1: 10px;
+  --margin-1-color: #e8842e;
+  --margin-2: 20px;
+  --margin-2-color: #0a00ff;
+  --margin-3: 30px;
+  --margin-3-color: #00ebff;
+  --margin-4: 40px;
+  --margin-4-color: #2ee844;
+  --margin-5: 50px;
+  --margin-5-color: #e12ee8;
+
+  --grid-gap: 4px;
+}
