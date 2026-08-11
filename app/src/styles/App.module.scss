@@ -42,7 +42,7 @@ header.header {
   grid-row: 1 / -1;
   position: sticky;
   top: var(--margin);
-  z-index: 2;
+  z-index: 101;
   height: calc(100dvh - (2 * var(--margin)));
   align-items: center;
   align-self: start;
