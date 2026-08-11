@@ -58,7 +58,7 @@ const getPathWithLetterSpacing = (font, text, letterSpacing) => {
   return path;
 };
 
-const RenderSVG = ({ text, className = "", fontUrl = DEFAULT_FONT_URL, letterSpacing = 0, padding = 0 }) => {
+const RenderSVG = ({ text, className = "", fontUrl = DEFAULT_FONT_URL, letterSpacing = 0, padding = 0, ...svgProps }) => {
   const [outline, setOutline] = useState(null);
 
   useEffect(() => {
@@ -100,6 +100,7 @@ const RenderSVG = ({ text, className = "", fontUrl = DEFAULT_FONT_URL, letterSpa
       preserveAspectRatio="xMinYMax meet"
       role="img"
       viewBox={viewBox}
+      {...svgProps}
     >
       {pathData ? <path className={styles.path} d={pathData} /> : null}
     </svg>

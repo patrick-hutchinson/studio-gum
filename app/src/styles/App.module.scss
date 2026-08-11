@@ -51,6 +51,13 @@ header.header {
   line-height: 1;
 }
 
-.gumLogo[data-animate-gap="true"] {
-  transition: gap 0.5s ease-in-out;
+.gumLogoHandle {
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.gumLogoHandle:active {
+  cursor: grabbing;
 }

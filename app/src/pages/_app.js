@@ -47,6 +47,9 @@ export default function App({ Component, pageProps }) {
   const shouldAnimateLayoutFrameRef = useRef(false);
   const logoAnimationTimeoutRef = useRef(null);
   const settledLayoutTimeoutsRef = useRef([]);
+  const navigationScrollTimeoutRef = useRef(null);
+  const isNavigationSettlingRef = useRef(false);
+  const gumDragRef = useRef(null);
 
   const [exitingPageBox, setExitingPageBox] = useState(null);
 
@@ -95,8 +98,10 @@ export default function App({ Component, pageProps }) {
     const scrollProgress =
       animateLogo && maxScroll > 0 ? 0 : maxScroll <= 0 ? 1 : Math.min(1, Math.max(0, window.scrollY / maxScroll));
 
+    const nextGap = `${minGap + (maxGap - minGap) * scrollProgress}px`;
+
     if (animateLogo) {
-      logo.dataset.animateGap = "true";
+      logo.style.transition = "gap 0.5s ease-in-out";
       logo.getBoundingClientRect();
 
       if (logoAnimationTimeoutRef.current) {
@@ -104,11 +109,11 @@ export default function App({ Component, pageProps }) {
       }
 
       logoAnimationTimeoutRef.current = window.setTimeout(() => {
-        delete logo.dataset.animateGap;
+        logo.style.transition = "";
         logoAnimationTimeoutRef.current = null;
       }, 500);
     } else {
-      delete logo.dataset.animateGap;
+      logo.style.transition = "none";
 
       if (logoAnimationTimeoutRef.current) {
         window.clearTimeout(logoAnimationTimeoutRef.current);
@@ -116,7 +121,7 @@ export default function App({ Component, pageProps }) {
       }
     }
 
-    logo.style.setProperty("--gum-logo-gap", `${minGap + (maxGap - minGap) * scrollProgress}px`);
+    logo.style.gap = nextGap;
   }, []);
 
   const scheduleLayoutMetricsUpdate = useCallback((animateLogo = false) => {
@@ -147,12 +152,97 @@ export default function App({ Component, pageProps }) {
   }, [cancelSettledLayoutMetricsUpdates, scheduleLayoutMetricsUpdate]);
 
   const handleScroll = useCallback(() => {
+    if (isNavigationSettlingRef.current) return;
+
     cancelSettledLayoutMetricsUpdates();
     scheduleLayoutMetricsUpdate(false);
   }, [cancelSettledLayoutMetricsUpdates, scheduleLayoutMetricsUpdate]);
 
+  const handleScrollIntent = useCallback(() => {
+    isNavigationSettlingRef.current = false;
+
+    if (navigationScrollTimeoutRef.current) {
+      window.clearTimeout(navigationScrollTimeoutRef.current);
+      navigationScrollTimeoutRef.current = null;
+    }
+  }, []);
+
+  const handleGumDragStart = useCallback(
+    (event) => {
+      const logo = gumLogoRef.current;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (!logo || maxScroll <= 0) return;
+
+      const handleHeight = event.currentTarget.getBoundingClientRect().height;
+      const dragRange = Math.max(1, logo.getBoundingClientRect().height - handleHeight);
+
+      handleScrollIntent();
+      cancelSettledLayoutMetricsUpdates();
+      event.currentTarget.setPointerCapture(event.pointerId);
+      gumDragRef.current = {
+        dragRange,
+        maxScroll,
+        pointerId: event.pointerId,
+        startScrollY: window.scrollY,
+        startY: event.clientY,
+      };
+    },
+    [cancelSettledLayoutMetricsUpdates, handleScrollIntent],
+  );
+
+  const handleGumDragMove = useCallback((event) => {
+    const dragState = gumDragRef.current;
+
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+
+    const dragDelta = event.clientY - dragState.startY;
+    const nextScrollY = dragState.startScrollY + (dragDelta / dragState.dragRange) * dragState.maxScroll;
+
+    event.preventDefault();
+    window.scrollTo({
+      top: Math.min(dragState.maxScroll, Math.max(0, nextScrollY)),
+    });
+  }, []);
+
+  const handleGumDragEnd = useCallback((event) => {
+    const dragState = gumDragRef.current;
+
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    gumDragRef.current = null;
+  }, []);
+
   useEffect(() => {
     const resizeObserver = new ResizeObserver(scheduleSettledLayoutMetricsUpdate);
+    const handleRouteChangeStart = () => {
+      isNavigationSettlingRef.current = true;
+
+      if (navigationScrollTimeoutRef.current) {
+        window.clearTimeout(navigationScrollTimeoutRef.current);
+      }
+
+      cancelSettledLayoutMetricsUpdates();
+      scheduleLayoutMetricsUpdate(false);
+    };
+
+    const handleRouteChangeComplete = () => {
+      isNavigationSettlingRef.current = true;
+      scheduleSettledLayoutMetricsUpdate();
+
+      if (navigationScrollTimeoutRef.current) {
+        window.clearTimeout(navigationScrollTimeoutRef.current);
+      }
+
+      navigationScrollTimeoutRef.current = window.setTimeout(() => {
+        isNavigationSettlingRef.current = false;
+        navigationScrollTimeoutRef.current = null;
+      }, 800);
+    };
 
     [shellRef.current, headerRef.current, gumLogoRef.current, contentRef.current].forEach((element) => {
       if (element) resizeObserver.observe(element);
@@ -161,16 +251,20 @@ export default function App({ Component, pageProps }) {
     scheduleSettledLayoutMetricsUpdate();
     document.fonts?.ready?.then(scheduleSettledLayoutMetricsUpdate);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("touchstart", handleScrollIntent, { passive: true });
+    window.addEventListener("wheel", handleScrollIntent, { passive: true });
     window.addEventListener("resize", scheduleSettledLayoutMetricsUpdate);
-    router.events.on("routeChangeStart", scheduleSettledLayoutMetricsUpdate);
-    router.events.on("routeChangeComplete", scheduleSettledLayoutMetricsUpdate);
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
 
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("touchstart", handleScrollIntent);
+      window.removeEventListener("wheel", handleScrollIntent);
       window.removeEventListener("resize", scheduleSettledLayoutMetricsUpdate);
-      router.events.off("routeChangeStart", scheduleSettledLayoutMetricsUpdate);
-      router.events.off("routeChangeComplete", scheduleSettledLayoutMetricsUpdate);
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
 
       if (layoutAnimationFrameRef.current) {
         window.cancelAnimationFrame(layoutAnimationFrameRef.current);
@@ -182,9 +276,21 @@ export default function App({ Component, pageProps }) {
         logoAnimationTimeoutRef.current = null;
       }
 
+      if (navigationScrollTimeoutRef.current) {
+        window.clearTimeout(navigationScrollTimeoutRef.current);
+        navigationScrollTimeoutRef.current = null;
+      }
+
       cancelSettledLayoutMetricsUpdates();
     };
-  }, [cancelSettledLayoutMetricsUpdates, handleScroll, router.events, scheduleSettledLayoutMetricsUpdate]);
+  }, [
+    cancelSettledLayoutMetricsUpdates,
+    handleScroll,
+    handleScrollIntent,
+    router.events,
+    scheduleLayoutMetricsUpdate,
+    scheduleSettledLayoutMetricsUpdate,
+  ]);
 
   return (
     <>
@@ -204,7 +310,14 @@ export default function App({ Component, pageProps }) {
               <div ref={gumLogoRef} className={styles.gumLogo} typo="h3 bold compensate">
                 <RenderSVG text="G" />
                 <RenderSVG text="U" />
-                <RenderSVG text="M" />
+                <RenderSVG
+                  text="M"
+                  className={styles.gumLogoHandle}
+                  onPointerCancel={handleGumDragEnd}
+                  onPointerDown={handleGumDragStart}
+                  onPointerMove={handleGumDragMove}
+                  onPointerUp={handleGumDragEnd}
+                />
               </div>
 
               <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
