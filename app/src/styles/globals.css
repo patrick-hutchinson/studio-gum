@@ -107,13 +107,6 @@ button {
   all: unset;
 }
 
-.invert {
-  background: var(--foreground);
-  color: var(--background);
-
-  transition: var(--transtition);
-}
-
 @media screen and (min-width: 769px) {
   :root {
     --margin-1: 270px;
@@ -153,6 +146,7 @@ button:focus-visible {
 
 a:hover,
 button:hover {
+  cursor: pointer;
   color: var(--focus);
 }
 

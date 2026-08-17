@@ -9,7 +9,7 @@ import Link from "next/link";
 function ProjectInfo({ project }) {
   return (
     <div className={styles.projectInfo}>
-      <h3>{project.title}</h3>
+      <h3 typo="bold">{project.title}</h3>
     </div>
   );
 }

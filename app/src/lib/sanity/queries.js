@@ -49,13 +49,13 @@ const projectFields = `{
   slug
 }`;
 
-export const pressQuery = `*[_type=="press"] | order(title asc) {
+export const pressQuery = `*[_type=="press"] | order(orderRank asc, title asc) {
   _id,
   _type,
   cover ${imageAssetFragment}
 }`;
 
-export const projectsQuery = `*[_type=="project"] | order(title asc) ${projectFields}`;
+export const projectsQuery = `*[_type=="project"] | order(orderRank asc, title asc) ${projectFields}`;
 
 export const projectQuery = `*[_type=="project" && slug.current == $slug][0] ${projectFields}`;
 
