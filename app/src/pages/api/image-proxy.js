@@ -1,5 +1,13 @@
-const ALLOWED_HOSTNAME = "cdn.sanity.io";
-const ALLOWED_PATH_PREFIX = "/images/";
+const ALLOWED_SOURCES = [
+  {
+    hostname: "cdn.sanity.io",
+    pathPrefix: "/images/",
+  },
+  {
+    hostname: "image.mux.com",
+    pathPrefix: "/",
+  },
+];
 
 export default async function handler(req, res) {
   const source = Array.isArray(req.query.url) ? req.query.url[0] : req.query.url;
@@ -20,8 +28,9 @@ export default async function handler(req, res) {
 
   const isAllowedImage =
     sourceUrl.protocol === "https:" &&
-    sourceUrl.hostname === ALLOWED_HOSTNAME &&
-    sourceUrl.pathname.startsWith(ALLOWED_PATH_PREFIX);
+    ALLOWED_SOURCES.some((source) => {
+      return sourceUrl.hostname === source.hostname && sourceUrl.pathname.startsWith(source.pathPrefix);
+    });
 
   if (!isAllowedImage) {
     res.status(400).json({ error: "Unsupported image URL" });

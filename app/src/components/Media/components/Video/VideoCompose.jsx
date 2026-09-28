@@ -1,4 +1,5 @@
 import { useInView } from "framer-motion";
+import NextImage from "next/image";
 import { useRef, useState, useEffect } from "react";
 
 import { useVideoPlayer } from "@/components/Media/hooks/useVideoPlayer";
@@ -15,6 +16,7 @@ const VideoCompose = ({
   objectFit = "cover",
   objectPosition = "center",
   paused,
+  playVideo = true,
   showPlaceholder = true,
 }) => {
   const videoRef = useRef(null);
@@ -27,6 +29,7 @@ const VideoCompose = ({
 
   const [aspectWidth, aspectHeight] = medium.aspect_ratio.split(":");
   const aspectRatio = aspectWidth / aspectHeight;
+  const poster = `https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=1200`;
 
   const playerState = { eager, isLoaded, setIsLoaded, isInView: eager || isInView };
   const playerControls = useVideoPlayer();
@@ -35,14 +38,31 @@ const VideoCompose = ({
   return (
     <div className={`${styles.mediaContainer} ${className}`}>
       <div ref={videoRef} className={styles.videoPlayer} style={{ aspectRatio: aspectRatio }}>
-        {showPlaceholder ? <Placeholder medium={medium} aspectRatio={aspectRatio} isLoaded={isLoaded} /> : null}
-        <Video
-          medium={medium}
-          objectFit={objectFit}
-          objectPosition={objectPosition}
-          playerState={playerState}
-          playerControls={controlledPlayerControls}
-        />
+        {playVideo ? (
+          <>
+            {showPlaceholder ? <Placeholder medium={medium} aspectRatio={aspectRatio} isLoaded={isLoaded} /> : null}
+            <Video
+              medium={medium}
+              objectFit={objectFit}
+              objectPosition={objectPosition}
+              playerState={playerState}
+              playerControls={controlledPlayerControls}
+            />
+          </>
+        ) : (
+          <NextImage
+            src={poster}
+            alt={medium.caption || "Video thumbnail"}
+            fill
+            unoptimized
+            draggable={false}
+            sizes="(min-width: 1280px) 33vw, 100vw"
+            style={{
+              objectFit,
+              objectPosition,
+            }}
+          />
+        )}
       </div>
     </div>
   );

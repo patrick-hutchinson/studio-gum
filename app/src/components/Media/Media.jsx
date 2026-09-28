@@ -10,6 +10,7 @@ const Media = ({
   objectFit = "contain",
   objectPosition = "center",
   paused,
+  playVideo = true,
   showPlaceholder = true,
 }) => {
   if (!medium || (!medium.url && !medium.playbackId)) return undefined;
@@ -34,6 +35,7 @@ const Media = ({
           objectFit={objectFit}
           objectPosition={objectPosition}
           paused={paused}
+          playVideo={playVideo}
           showPlaceholder={showPlaceholder}
         />
       );

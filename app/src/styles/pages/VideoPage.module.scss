@@ -19,6 +19,29 @@
   overflow: hidden;
   display: grid;
   grid-column: span 4;
+  padding: 0;
+  border: 0;
+  background: var(--project-background);
+  color: inherit;
+  cursor: pointer;
+}
+
+.thumbnail {
+  grid-area: 1 / 1;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.video:hover .thumbnail {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.colorSampler {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .video:nth-child(3n + 1) {

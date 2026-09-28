@@ -21,7 +21,7 @@
 }
 
 .carouselInner {
-  --carousel-slide-overlap: 1px;
+  --carousel-slide-overlap: 0px;
   display: flex;
   touch-action: manipulation;
 }
