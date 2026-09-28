@@ -18,6 +18,7 @@ const VideoCompose = ({
   paused,
   playVideo = true,
   showPlaceholder = true,
+  showVideoPoster = true,
 }) => {
   const videoRef = useRef(null);
 
@@ -47,6 +48,7 @@ const VideoCompose = ({
               objectPosition={objectPosition}
               playerState={playerState}
               playerControls={controlledPlayerControls}
+              showPoster={showVideoPoster}
             />
           </>
         ) : (

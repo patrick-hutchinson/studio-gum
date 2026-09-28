@@ -112,7 +112,7 @@ const FullscreenView = ({ activeIndex, gallery, onClose, onNavigate }) => {
       ) : null}
 
       <button className={styles.mediaArea} type="button" onClick={isDesktop ? undefined : onClose}>
-        <Media medium={activeItem.medium} className={styles.fullscreenMedia} eager />
+        <Media medium={activeItem.medium} className={styles.fullscreenMedia} eager showVideoPoster={false} />
       </button>
 
       {!isDesktop ? (

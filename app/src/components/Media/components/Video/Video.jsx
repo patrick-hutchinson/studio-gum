@@ -3,7 +3,14 @@ import MuxVideo from "@mux/mux-video/react";
 
 import { getVideoSource } from "@/components/Media/lib/getVideoUrl";
 
-const Video = ({ medium, objectFit = "cover", objectPosition = "center", playerState, playerControls }) => {
+const Video = ({
+  medium,
+  objectFit = "cover",
+  objectPosition = "center",
+  playerState,
+  playerControls,
+  showPoster = true,
+}) => {
   const source = getVideoSource(medium);
   const VideoElement = source?.type === "hls" ? MuxVideo : "video";
 
@@ -33,7 +40,7 @@ const Video = ({ medium, objectFit = "cover", objectPosition = "center", playerS
       loop
       muted={playerControls.muted ?? true}
       preload={playerState.eager ? "auto" : "metadata"}
-      poster={`https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=1200`}
+      poster={showPoster ? `https://image.mux.com/${medium.playbackId}/thumbnail.jpg?width=1200` : undefined}
       style={{
         position: "relative",
         opacity: 1,

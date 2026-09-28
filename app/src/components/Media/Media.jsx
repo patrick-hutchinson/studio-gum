@@ -12,6 +12,7 @@ const Media = ({
   paused,
   playVideo = true,
   showPlaceholder = true,
+  showVideoPoster = true,
 }) => {
   if (!medium || (!medium.url && !medium.playbackId)) return undefined;
 
@@ -37,6 +38,7 @@ const Media = ({
           paused={paused}
           playVideo={playVideo}
           showPlaceholder={showPlaceholder}
+          showVideoPoster={showVideoPoster}
         />
       );
     default:
