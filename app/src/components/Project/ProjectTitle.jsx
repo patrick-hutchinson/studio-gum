@@ -1,3 +1,5 @@
+import SanityPreviewFallback, { SanityPreviewValue } from "@/components/SanityPreviewFallback";
+
 import styles from "./Project.module.scss";
 
 const ProjectTitle = ({ project }) => {
@@ -8,12 +10,12 @@ const ProjectTitle = ({ project }) => {
 
   return (
     <div className={styles.projectTitle}>
-      {categories && (
-        <span className={styles.categories} typo="label">
-          ({categories})
-        </span>
-      )}
-      <span typo="title">{project.title}</span>
+      <span className={styles.categories} typo="label">
+        {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
+      </span>
+      <span typo="title">
+        <SanityPreviewValue value={project.title} fieldTitle="Project title" />
+      </span>
     </div>
   );
 };

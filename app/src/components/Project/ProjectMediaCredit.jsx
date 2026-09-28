@@ -1,3 +1,5 @@
+import SanityPreviewFallback from "@/components/SanityPreviewFallback";
+
 import styles from "./Project.module.scss";
 
 const ProjectMediaCredit = ({ project, carouselIndex }) => {
@@ -6,7 +8,7 @@ const ProjectMediaCredit = ({ project, carouselIndex }) => {
   const galleryCredit = gallery.credit?.trim();
   const credit = currentMediaCredit || galleryCredit;
 
-  if (!credit) return null;
+  if (!credit) return <SanityPreviewFallback className={styles.mediaCredit} fieldTitle="Gallery or image credit" />;
 
   return (
     <div className={styles.mediaCredit}>

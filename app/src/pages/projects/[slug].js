@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 
 import FullscreenView from "@/components/FullscreenView/FullscreenView";
+import SanityPreviewFallback from "@/components/SanityPreviewFallback";
 
 import { getProject, getProjectSlugs, getProjects, getSite } from "@/lib/sanity";
 
@@ -53,14 +54,18 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
 
   return (
     <main className={styles.main}>
-      <section className={styles.gallery} aria-label={`${project.title} gallery`}>
-        <Carousel
-          array={galleryMedia}
-          className={styles.projectCarousel}
-          contained
-          fitMediaToBounds
-          onIndexChange={setCarouselIndex}
-        />
+      <section className={styles.gallery} aria-label={`${project.title || "Project"} gallery`}>
+        {galleryMedia.length ? (
+          <Carousel
+            array={galleryMedia}
+            className={styles.projectCarousel}
+            contained
+            fitMediaToBounds
+            onIndexChange={setCarouselIndex}
+          />
+        ) : (
+          <SanityPreviewFallback fieldTitle="Project gallery" />
+        )}
       </section>
       <section className={styles.projectInfoContainer}>
         <div className={styles.projectInfo}>

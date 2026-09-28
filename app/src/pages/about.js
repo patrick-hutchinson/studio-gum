@@ -1,14 +1,19 @@
 import Media from "@/components/Media/Media";
+import SanityPreviewFallback, { SanityPreviewValue } from "@/components/SanityPreviewFallback";
+import Text from "@/components/Text/Text";
 import { getAboutPage, getSite } from "@/lib/sanity";
 import styles from "@/styles/pages/AboutPage.module.scss";
-import Text from "@/components/Text/Text";
 
 export default function About({ aboutPage }) {
   const CurrentTeam = ({ team }) => {
     return (
       <div>
         <span typo="label">(Current Team)</span>
-        <span typo="body">{team.join(", ")}</span>
+        <span typo="body">
+          <SanityPreviewValue value={team} fieldTitle="Current team">
+            {team?.join(", ")}
+          </SanityPreviewValue>
+        </span>
       </div>
     );
   };
@@ -17,7 +22,11 @@ export default function About({ aboutPage }) {
     return (
       <div>
         <span typo="label">(Past Team)</span>
-        <span typo="body">{team.join(", ")}</span>
+        <span typo="body">
+          <SanityPreviewValue value={team} fieldTitle="Past team">
+            {team?.join(", ")}
+          </SanityPreviewValue>
+        </span>
       </div>
     );
   };
@@ -26,14 +35,18 @@ export default function About({ aboutPage }) {
     <div className={`${styles.page} page`}>
       <main className={`${styles.main} main`}>
         <section className={styles.portrait}>
-          <Media medium={aboutPage.portrait.medium} objectFit="cover" />
+          {aboutPage?.portrait?.medium ? (
+            <Media medium={aboutPage.portrait.medium} objectFit="cover" />
+          ) : (
+            <SanityPreviewFallback fieldTitle="About portrait" />
+          )}
         </section>
         <section className={styles.aboutTextContainer}>
-          <Text text={aboutPage.lead} typo="body" />
+          {aboutPage?.lead ? <Text text={aboutPage.lead} typo="body" /> : <SanityPreviewFallback fieldTitle="About lead" />}
         </section>
         <section className={styles.team}>
-          <CurrentTeam team={aboutPage.currentTeam} />
-          <PastTeam team={aboutPage.pastTeam} />
+          <CurrentTeam team={aboutPage?.currentTeam} />
+          <PastTeam team={aboutPage?.pastTeam} />
         </section>
       </main>
     </div>

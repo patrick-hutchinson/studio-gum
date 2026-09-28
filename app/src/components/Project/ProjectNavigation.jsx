@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SanityPreviewValue } from "@/components/SanityPreviewFallback";
+
 import styles from "./Project.module.scss";
 
 const getProjectHref = (project) => {
@@ -19,13 +21,17 @@ const ProjectNavigation = ({ nextProject, previousProject }) => {
       {previousHref ? (
         <Link className={styles.projectNavigationLink} href={previousHref}>
           <span typo="label">(Prev)</span>
-          <span typo="body">{previousProject.title}</span>
+          <span typo="body">
+            <SanityPreviewValue value={previousProject.title} fieldTitle="Previous project title" />
+          </span>
         </Link>
       ) : null}
       {nextHref ? (
         <Link className={styles.projectNavigationLink} href={nextHref}>
           <span typo="label">(Next)</span>
-          <span typo="body">{nextProject.title}</span>
+          <span typo="body">
+            <SanityPreviewValue value={nextProject.title} fieldTitle="Next project title" />
+          </span>
         </Link>
       ) : null}
     </nav>
