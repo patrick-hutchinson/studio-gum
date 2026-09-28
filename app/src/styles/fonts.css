@@ -1,9 +1,4 @@
 :root {
-  --fs-1: 4rem;
-  --lh-1: 4rem;
-  --ls-1: 0;
-  --ps-1: 0rem;
-
   --fs-2: 2.8rem;
   --lh-2: 2.8rem;
   --ls-2: 0;
@@ -61,6 +56,7 @@
 }
 
 [typo~="label"] {
+  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   font-size: var(--fs-4);
   line-height: var(--lh-4);
   letter-spacing: var(--ls-4);
@@ -71,16 +67,19 @@
 }
 
 [typo~="label"] p {
+  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   margin-bottom: var(--ps-4);
 }
 
 /* Font Compensation */
 [typo~="label"][typo~="compensate-top"] {
+  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   --h3-overshoot: 0.18em;
   margin-top: calc(var(--h3-overshoot) * -1);
 }
 
 [typo~="label"][typo~="compensate-bottom"] {
+  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   --h3-undershoot: 0.15em;
   margin-bottom: calc(var(--h3-undershoot) * -1);
 }

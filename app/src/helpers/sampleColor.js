@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
-const COLOR_LERP_AMOUNT = 0.16;
-const COLOR_SETTLE_THRESHOLD = 0.75;
+const COLOR_LERP_AMOUNT = 0.05;
+const COLOR_SETTLE_THRESHOLD = 0.35;
 const PROJECT_BACKGROUND_PROPERTY = "--project-background";
 
 function formatRgb(color) {

@@ -14,14 +14,10 @@
     repeat(4, var(--main-grid-track));
   grid-template-rows: 1fr;
   column-gap: var(--margin);
-  // row-gap: var(--margin);
 }
 
-.content {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  min-width: 0;
-  min-height: 0;
+.indexIntro {
+  cursor: pointer;
 }
 
 .alley {
@@ -37,6 +33,13 @@
 
   z-index: 101;
   height: calc(100dvh - (2 * var(--margin)));
+}
+
+.content {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
 }
 
 .menuAnimation {

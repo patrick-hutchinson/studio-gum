@@ -13,6 +13,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Head from "next/head";
 import Menu from "@/components/Menu/Menu";
 
+import LogoInteraction from "@/components/LogoInteraction/LogoInteraction";
+
 import "@/styles/globals.css";
 import "@/styles/margins.css";
 import "@/styles/fonts.css";
@@ -36,13 +38,17 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const site = pageProps.site || {};
   const forcedTheme = router.pathname === "/press" ? "yellow" : "light";
+  const shouldShowIndexIntroRef = useRef(router.pathname === "/");
   const shellRef = useRef(null);
   const contentRef = useRef(null);
   const pageTransitionRef = useRef(null);
+  const menuButtonRef = useRef(null);
 
   const [exitingPageBox, setExitingPageBox] = useState(null);
 
   const [showMenu, setShowMenu] = useState(false);
+  const [hasEnteredPage, setHasEnteredPage] = useState(!shouldShowIndexIntroRef.current);
+  const isIndexIntro = !hasEnteredPage;
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
@@ -85,50 +91,73 @@ export default function App({ Component, pageProps }) {
       >
         <ViewportProvider>
           <DeviceProvider>
-            <div ref={shellRef} className={styles.shell}>
-              <div className={styles.alley} typo="marker bold compensate">
-                <AnimatePresence>
-                  {showMenu && (
+            <div
+              ref={shellRef}
+              className={`${styles.shell} ${isIndexIntro ? styles.indexIntro : ""}`}
+              onClick={isIndexIntro ? () => setHasEnteredPage(true) : undefined}
+            >
+              {hasEnteredPage && (
+                <motion.div
+                  className={styles.alley}
+                  typo="marker bold compensate"
+                  initial={shouldShowIndexIntroRef.current ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <AnimatePresence>
+                    {showMenu && (
+                      <motion.div
+                        key="menu"
+                        className={styles.menuAnimation}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                      >
+                        <div className={styles.menu}>
+                          <Menu />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <img
+                    className={`${styles.menuButton} ${showMenu ? styles.showMenu : null} `}
+                    ref={menuButtonRef}
+                    src="/icons/plus.svg"
+                    onClick={() => setShowMenu((prev) => !prev)}
+                  />
+                </motion.div>
+              )}
+
+              <LogoInteraction menuButtonRef={menuButtonRef} />
+
+              {hasEnteredPage && (
+                <motion.div
+                  ref={contentRef}
+                  className={`${styles.content} pageTransitionRoot`}
+                  initial={shouldShowIndexIntroRef.current ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <MarginDebugOverlay />
+
+                  <AnimatePresence custom={exitingPageBox} initial={false}>
                     <motion.div
-                      key="menu"
-                      className={styles.menuAnimation}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      animate="animate"
+                      className="pageTransition"
+                      custom={exitingPageBox}
+                      exit="exit"
+                      initial="initial"
+                      key={router.asPath}
+                      ref={pageTransitionRef}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      variants={pageTransitionVariants}
                     >
-                      <div className={styles.menu}>
-                        <Menu />
-                      </div>
+                      <Component {...pageProps} />
                     </motion.div>
-                  )}
-                </AnimatePresence>
-                <img
-                  className={`${styles.menuButton} ${showMenu ? styles.showMenu : null} `}
-                  src="/icons/plus.svg"
-                  onClick={() => setShowMenu((prev) => !prev)}
-                />
-              </div>
-
-              <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
-                <MarginDebugOverlay />
-
-                <AnimatePresence custom={exitingPageBox} initial={false}>
-                  <motion.div
-                    animate="animate"
-                    className="pageTransition"
-                    custom={exitingPageBox}
-                    exit="exit"
-                    initial="initial"
-                    key={router.asPath}
-                    ref={pageTransitionRef}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    variants={pageTransitionVariants}
-                  >
-                    <Component {...pageProps} />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                  </AnimatePresence>
+                </motion.div>
+              )}
             </div>
           </DeviceProvider>
         </ViewportProvider>

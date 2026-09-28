@@ -1,0 +1,28 @@
+.logoContainer {
+  width: 100vw;
+  height: var(--alley-track-width);
+  color: var(--focus);
+
+  position: fixed;
+  left: 0;
+  top: calc(var(--margin) + (100vh - (2 * var(--margin))) * (2 / 3)) !important;
+
+  z-index: 2;
+  pointer-events: none;
+  margin-top: var(--margin);
+}
+
+.logoLetterWrapper {
+  position: absolute;
+  top: 0;
+  height: var(--alley-track-width);
+  pointer-events: auto;
+  transition: left 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.logoLetter {
+  width: auto;
+  height: var(--alley-track-width);
+  max-width: none;
+  flex: 0 0 auto;
+}

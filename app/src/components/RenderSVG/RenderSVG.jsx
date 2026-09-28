@@ -3,7 +3,7 @@ import opentype from "opentype.js";
 
 import styles from "./RenderSVG.module.css";
 
-const DEFAULT_FONT_URL = "/fonts/MaisonNeue-Demi.otf";
+const DEFAULT_FONT_URL = "/fonts/MaisonNeue-Book.otf";
 const SVG_FONT_SIZE = 1000;
 const fontCache = new Map();
 const fallbackBox = {
