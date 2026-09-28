@@ -1,11 +1,12 @@
 :root {
-  --fs-2: 2.8rem;
+  --fs-2: clamp(2.4rem, 1.824rem + 0.678vw, 2.8rem);
   --lh-2: 2.8rem;
   --ls-2: 0;
   --ps-2: 0rem;
 
-  --fs-3: 2.2rem;
-  --lh-3: 2.2rem;
+  /* --fs-3: 2.2rem; */
+  --fs-3: clamp(1.8rem, 1.224rem + 0.678vw, 2.2rem);
+  --lh-3: clamp(1.8rem, 1.224rem + 0.678vw, 2.2rem);
   --ls-3: 0;
   --ps-3: 0rem;
 
@@ -62,7 +63,7 @@
   letter-spacing: var(--ls-4);
 
   display: inline-block;
-  transform: translateY(calc(-0.5 * var(--fs-4)));
+  transform: translateY(calc(-0.25 * var(--fs-3)));
   margin-right: var(--margin-7);
 }
 
