@@ -1,0 +1,118 @@
+.carouselOuter {
+  position: relative;
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  user-select: none;
+  overflow: hidden;
+  touch-action: manipulation;
+  /* overscroll-behavior: contain; */
+}
+
+.carouselMiniature {
+  margin-left: 0;
+}
+
+.desktopClickNavigation,
+.desktopClickNavigation:active,
+.desktopClickNavigation:active * {
+  cursor: none !important;
+}
+
+.carouselInner {
+  --carousel-slide-overlap: 1px;
+  display: flex;
+  touch-action: manipulation;
+}
+
+.mediaCounter {
+  position: absolute;
+  bottom: var(--margin);
+  left: var(--margin);
+  z-index: 5;
+  pointer-events: none;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.slide {
+  flex: 0 0 auto;
+
+  /* The negative end margin is included in Embla's measured track width, including the loop boundary. */
+  margin-right: calc(var(--margin-page, 0px) - var(--carousel-slide-overlap));
+}
+
+.carouselFullscreen .slide {
+  height: 100vh;
+}
+
+.carouselContained,
+.carouselContained .carouselInner,
+.carouselContained .slide {
+  height: 100%;
+}
+
+.carouselFitMediaToBounds .carouselInner {
+  align-items: flex-start;
+  height: 100%;
+}
+
+.carouselFitMediaToBounds .fitMediaSlide {
+  max-width: 100%;
+}
+
+.carouselFitMediaToBounds .landscapeSlide {
+  width: 100%;
+  height: 100%;
+}
+
+.carouselFitMediaToBounds .portraitSlide {
+  width: auto;
+  height: 100%;
+  aspect-ratio: var(--media-aspect-ratio);
+}
+
+.carouselFitMediaToBounds .fitMediaSlide > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carouselMiniature .slide {
+  height: calc(((100vw / 12) * 3) * (100vh / 100vw));
+
+  /* aspect-ratio: 100vw / 100vh; */
+}
+
+.carouselCursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: var(--alley-track-width);
+  width: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-in-out;
+  will-change: transform;
+}
+
+.carouselCursorVisible {
+  opacity: 1;
+}
+
+@media screen and (min-width: 320px) {
+}
+
+/* iPads and other Tablets */
+@media screen and (min-width: 769px) {
+}
+
+/* Desktop */
+@media screen and (min-width: 1280px) {
+}
+
+/* Large Format Screens */
+@media screen and (min-width: 2560px) {
+}

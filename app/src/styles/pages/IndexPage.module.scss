@@ -29,6 +29,8 @@
 .thumbnail,
 .projectInfo {
   grid-area: 1 / 1;
+  // aspect-ratio: 3 / 4;
+  height: 66.6vh !important;
 }
 
 .projectInfo {
@@ -37,10 +39,6 @@
   background: var(--project-background);
 
   padding: var(--margin);
-}
-
-.projectInfo h3 {
-  line-height: 1;
 }
 
 .project:hover .projectInfo {

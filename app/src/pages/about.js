@@ -1,27 +1,24 @@
 import Media from "@/components/Media/Media";
 import { getAboutPage, getSite } from "@/lib/sanity";
-import styles from "@/styles/About.module.scss";
+import styles from "@/styles/pages/AboutPage.module.scss";
 import Text from "@/components/Text/Text";
 
 export default function About({ aboutPage }) {
-  const ProjectCredits = () => {
+  const CurrentTeam = ({ team }) => {
     return (
-      <ul className={styles.projectCredits} typo="h3">
-        {aboutPage.credits?.map((credit) => {
-          return (
-            <li className={styles.creditContainer}>
-              <span className={styles.creditRole} typo="bold">
-                {credit.role}
-              </span>
-              <div className={styles.creditEntries}>
-                {credit.entries.map((entry) => {
-                  return <div className={styles.creditEntry}>{entry}</div>;
-                })}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <div>
+        <span typo="label">(Current Team)</span>
+        <span typo="body">{team.join(", ")}</span>
+      </div>
+    );
+  };
+
+  const PastTeam = ({ team }) => {
+    return (
+      <div>
+        <span typo="label">(Past Team)</span>
+        <span typo="body">{team.join(", ")}</span>
+      </div>
     );
   };
 
@@ -32,9 +29,11 @@ export default function About({ aboutPage }) {
           <Media medium={aboutPage.portrait.medium} objectFit="cover" />
         </section>
         <section className={styles.aboutTextContainer}>
-          <Text text={aboutPage.lead} typo="h3" />
-
-          <ProjectCredits />
+          <Text text={aboutPage.lead} typo="body" />
+        </section>
+        <section className={styles.team}>
+          <CurrentTeam team={aboutPage.currentTeam} />
+          <PastTeam team={aboutPage.pastTeam} />
         </section>
       </main>
     </div>
@@ -49,6 +48,6 @@ export async function getStaticProps() {
       site,
       aboutPage,
     },
-    revalidate: 60,
+    revalidate: 5,
   };
 }

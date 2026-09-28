@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import MuxVideo from "@mux/mux-video/react";
 
-import { getVideoUrl } from "@/components/Media/lib/getVideoUrl";
+import { getVideoSource } from "@/components/Media/lib/getVideoUrl";
 
-const Video = ({ medium, playerState, playerControls }) => {
-  const src = getVideoUrl(medium);
+const Video = ({ medium, objectFit = "cover", objectPosition = "center", playerState, playerControls }) => {
+  const source = getVideoSource(medium);
+  const VideoElement = source?.type === "hls" ? MuxVideo : "video";
 
   useEffect(() => {
     const player = playerControls.playerRef.current;
@@ -20,12 +22,12 @@ const Video = ({ medium, playerState, playerControls }) => {
     if (playPromise?.catch) playPromise.catch(() => {});
   }, [playerControls.muted, playerControls.paused, playerControls.playerRef]);
 
-  if (!playerState.isInView || !src) return null;
+  if (!playerState.isInView || !source?.url) return null;
 
   return (
-    <video
+    <VideoElement
       ref={playerControls.playerRef}
-      src={src}
+      src={source.url}
       autoPlay
       playsInline
       loop
@@ -38,7 +40,8 @@ const Video = ({ medium, playerState, playerControls }) => {
         zIndex: 0,
         width: "100%",
         height: "100%",
-        objectFit: "cover",
+        objectFit,
+        objectPosition,
       }}
       onCanPlay={() => playerState.setIsLoaded(true)}
       onTimeUpdate={playerControls.onTimeUpdate}

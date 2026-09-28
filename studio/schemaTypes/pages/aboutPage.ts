@@ -6,31 +6,24 @@ export const aboutPage = defineType({
   type: 'document',
 
   fields: [
+    defineField({name: 'portrait', type: 'mediaAsset'}),
     defineField({
       name: 'lead',
       title: 'Lead Text',
       type: 'portableText',
     }),
-
-    defineField({name: 'portrait', type: 'mediaAsset'}),
+    defineField({
+      name: 'currentTeam',
+      title: 'Current Team',
+      type: 'array',
+      of: [{type: 'string'}],
+    }),
 
     defineField({
-      name: 'credits',
+      name: 'pastTeam',
+      title: 'Past Team',
       type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({name: 'role', title: 'Role', type: 'string'}),
-            defineField({
-              name: 'entries',
-              title: 'Entries',
-              type: 'array',
-              of: [{type: 'string', name: 'entry'}],
-            }),
-          ],
-        },
-      ],
+      of: [{type: 'string'}],
     }),
   ],
   preview: {

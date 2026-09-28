@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const marginKeys = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const overlayId = "margin-debug-overlay";
@@ -408,20 +408,30 @@ function renderMarginOverlay() {
   });
 }
 
+function setStoredEnabledState(isEnabled) {
+  if (isEnabled) {
+    window.localStorage.setItem("spacingDebug", "1");
+    document.documentElement.dataset.marginDebug = "true";
+    return;
+  }
+
+  window.localStorage.removeItem("spacingDebug");
+  window.localStorage.removeItem("marginDebug");
+  delete document.documentElement.dataset.marginDebug;
+  document.getElementById(overlayId)?.remove();
+}
+
 function getInitialEnabledState() {
   const params = new URLSearchParams(window.location.search);
   const queryValue = params.get("spacingDebug") ?? params.get("marginDebug");
 
   if (queryValue === "1") {
-    window.localStorage.setItem("spacingDebug", "1");
-    document.documentElement.dataset.marginDebug = "true";
+    setStoredEnabledState(true);
     return true;
   }
 
   if (queryValue === "0") {
-    window.localStorage.removeItem("spacingDebug");
-    window.localStorage.removeItem("marginDebug");
-    delete document.documentElement.dataset.marginDebug;
+    setStoredEnabledState(false);
     return false;
   }
 
@@ -437,9 +447,43 @@ function getInitialEnabledState() {
   return isEnabled;
 }
 
+function isEditableTarget(target) {
+  if (!(target instanceof HTMLElement)) return false;
+
+  return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+}
+
 const MarginDebugOverlay = () => {
+  const [isEnabled, setIsEnabled] = useState(false);
+
   useEffect(() => {
-    if (!getInitialEnabledState()) return undefined;
+    setIsEnabled(getInitialEnabledState());
+  }, []);
+
+  useEffect(() => {
+    const toggleOverlay = (event) => {
+      if (event.key.toLowerCase() !== "r" || event.metaKey || event.ctrlKey || event.altKey || isEditableTarget(event.target)) {
+        return;
+      }
+
+      setIsEnabled((currentState) => {
+        const nextState = !currentState;
+        setStoredEnabledState(nextState);
+        return nextState;
+      });
+    };
+
+    window.addEventListener("keydown", toggleOverlay);
+
+    return () => {
+      window.removeEventListener("keydown", toggleOverlay);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isEnabled) return undefined;
+
+    document.documentElement.dataset.marginDebug = "true";
 
     let animationFrame = null;
 
@@ -479,7 +523,7 @@ const MarginDebugOverlay = () => {
       document.getElementById(overlayId)?.remove();
       delete document.documentElement.dataset.marginDebug;
     };
-  }, []);
+  }, [isEnabled]);
 
   return null;
 };

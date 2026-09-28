@@ -10,21 +10,13 @@
   column-gap: var(--margin);
   row-gap: var(--margin);
 
-  .gallery {
-    display: grid;
-    grid-column: 1 / span 8;
-    row-gap: var(--margin);
-
-    .galleryMedium {
-      display: block;
-      width: 100%;
-      max-height: var(--content-height);
-      cursor: pointer;
-    }
+  .portrait {
+    grid-column: 1 / span 4;
+    aspect-ratio: 5 / 3;
   }
 
-  .projectInfo {
-    grid-column: 10 / 14;
+  .aboutTextContainer {
+    grid-column: 5 / 9;
     position: sticky;
     top: calc(var(--margin) + var(--header-height) + var(--margin));
     align-self: start;
@@ -48,5 +40,12 @@
         }
       }
     }
+  }
+
+  .team {
+    grid-column: 10 / 14;
+    display: flex;
+    flex-direction: column;
+    gap: var(--margin-4);
   }
 }

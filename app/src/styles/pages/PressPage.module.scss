@@ -16,6 +16,13 @@
   width: 100%;
   grid-column: span 2;
   cursor: pointer;
+  mix-blend-mode: multiply;
+  filter: grayscale(1);
+}
+
+.cover:hover {
+  mix-blend-mode: normal;
+  filter: none;
 }
 
 .cover:nth-child(6n + 1) {

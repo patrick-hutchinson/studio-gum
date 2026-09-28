@@ -15,7 +15,7 @@ const Placeholder = ({ medium, isLoaded, objectFit }) => {
       alt="placeholder image"
       style={{
         position: "absolute",
-
+        pointerEvents: "none",
         width: "100%",
         height: "100%",
         top: 0,

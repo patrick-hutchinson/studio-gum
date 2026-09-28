@@ -30,12 +30,13 @@ export const videoAsset = defineType({
   ],
   preview: {
     select: {
-      video: 'video',
-      subtitle: 'copyright',
+      file: 'file',
+      subtitle: 'caption',
     },
-    prepare({video, subtitle}) {
+    prepare({file, subtitle}) {
       return {
-        media: video,
+        title: 'Video',
+        media: file,
         subtitle: subtitle,
       }
     },

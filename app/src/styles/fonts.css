@@ -1,8 +1,23 @@
 :root {
-  --fontSize-3: 1.8rem;
-  --lineHeight-3: 2.1rem;
-  --letterSpacing-3: 0;
-  ----paragraphSpacing-3: 0rem;
+  --fs-1: 4rem;
+  --lh-1: 4rem;
+  --ls-1: 0;
+  --ps-1: 0rem;
+
+  --fs-2: 2.8rem;
+  --lh-2: 2.8rem;
+  --ls-2: 0;
+  --ps-2: 0rem;
+
+  --fs-3: 2.2rem;
+  --lh-3: 2.2rem;
+  --ls-3: 0;
+  --ps-3: 0rem;
+
+  --fs-4: 1.2rem;
+  --lh-4: 1.2rem;
+  --ls-4: 0;
+  --ps-4: 0rem;
 }
 
 @font-face {
@@ -21,42 +36,51 @@
   font-display: swap;
 }
 
-h3,
-[typo~="h3"] {
-  font-size: var(--fontSize-3);
-  line-height: var(--lineHeight-3);
-  letter-spacing: var(--letterSpacing-3);
+[typo~="title"] {
+  font-family: "Times New Roman", Times, serif;
+  font-size: var(--fs-2);
+  line-height: var(--lh-2);
+  letter-spacing: var(--ls-2);
 }
-h3 p,
-[typo~="h3"] p {
-  margin-bottom: var(----paragraphSpacing-3);
+
+[typo~="title"] p {
+  font-family: "Times New Roman", Times, serif;
+  margin-bottom: var(----ps-2);
+}
+
+[typo~="body"] {
+  font-family: "Times New Roman", Times, serif;
+  font-size: var(--fs-3);
+  line-height: var(--lh-3);
+  letter-spacing: var(--ls-3);
+}
+
+[typo~="body"] p {
+  font-family: "Times New Roman", Times, serif;
+  margin-bottom: var(----ps-3);
+}
+
+[typo~="label"] {
+  font-size: var(--fs-4);
+  line-height: var(--lh-4);
+  letter-spacing: var(--ls-4);
+
+  display: inline-block;
+  transform: translateY(calc(-0.5 * var(--fs-4)));
+  margin-right: var(--margin-7);
+}
+
+[typo~="label"] p {
+  margin-bottom: var(--ps-4);
 }
 
 /* Font Compensation */
-[typo~="h3"][typo~="compensate-top"] {
+[typo~="label"][typo~="compensate-top"] {
   --h3-overshoot: 0.18em;
   margin-top: calc(var(--h3-overshoot) * -1);
 }
 
-[typo~="h3"][typo~="compensate-bottom"] {
+[typo~="label"][typo~="compensate-bottom"] {
   --h3-undershoot: 0.15em;
   margin-bottom: calc(var(--h3-undershoot) * -1);
-}
-
-[typo~="bold"] {
-  font-size: var(--fontSize-3);
-  line-height: var(--lineHeight-3);
-  letter-spacing: var(--letterSpacing-3);
-
-  font-family: "MaisonNeue";
-  font-weight: bold;
-}
-
-@media screen and (min-width: 769px) {
-  :root {
-    --fontSize-3: 1.5rem;
-    --lineHeight-3: 1.6rem;
-    --letterSpacing-3: 0;
-    ----paragraphSpacing-3: 0rem;
-  }
 }

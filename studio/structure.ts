@@ -46,6 +46,10 @@ export const structure: StructureResolver = (S, context) =>
 
       S.divider(),
 
+      S.documentTypeListItem('category').id('filtering-categories').title('Filtering Categories'),
+
+      S.divider(),
+
       // Everything else (exclude hidden types and the ones we added above)
       ...S.documentTypeListItems().filter((listItem) => !hiddenTypes.includes(listItem.getId()!)),
     ])

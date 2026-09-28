@@ -6,7 +6,7 @@ import {
   siteQuery,
   aboutPageQuery,
   pressQuery,
-  contactPageQuery,
+  videoPageQuery,
 } from "./queries";
 
 export function getSanityClient() {
@@ -45,12 +45,6 @@ export async function getAboutPage() {
   return aboutPage || [];
 }
 
-export async function getContactPage() {
-  const contactPage = await getSanityClient().fetch(contactPageQuery);
-
-  return contactPage || [];
-}
-
 export async function getProjects() {
   const projects = await getSanityClient().fetch(projectsQuery);
 
@@ -59,6 +53,12 @@ export async function getProjects() {
 
 export async function getPress() {
   const press = await getSanityClient().fetch(pressQuery);
+
+  return press || [];
+}
+
+export async function getVideoPage() {
+  const press = await getSanityClient().fetch(videoPageQuery);
 
   return press || [];
 }

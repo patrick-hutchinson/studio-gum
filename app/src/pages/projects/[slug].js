@@ -1,73 +1,85 @@
 import { useCallback, useState } from "react";
 
 import FullscreenView from "@/components/FullscreenView/FullscreenView";
-import Media from "@/components/Media/Media";
-import { getProject, getProjectSlugs, getSite } from "@/lib/sanity";
 
-import Text from "@/components/Text/Text";
-import styles from "@/styles/pages/Project.module.scss";
+import { getProject, getProjectSlugs, getProjects, getSite } from "@/lib/sanity";
 
-export default function ProjectPage({ project }) {
+import ProjectCredits from "@/components/Project/ProjectCredits";
+
+import ProjectNavigation from "@/components/Project/ProjectNavigation";
+
+import Carousel from "@/components/Carousel/Carousel";
+import styles from "@/styles/pages/ProjectPage.module.scss";
+import ProjectTitle from "@/components/Project/ProjectTitle";
+import ProjectMediaCredit from "@/components/Project/ProjectMediaCredit";
+
+function getProjectSlug(project) {
+  return project?.slug?.current || project?.slug;
+}
+
+function getAdjacentProjects(projects, currentSlug) {
+  const currentIndex = projects.findIndex((project) => getProjectSlug(project) === currentSlug);
+
+  if (currentIndex < 0 || projects.length < 2) {
+    return {
+      nextProject: null,
+      previousProject: null,
+    };
+  }
+
+  return {
+    previousProject: projects[(currentIndex - 1 + projects.length) % projects.length],
+    nextProject: projects[(currentIndex + 1) % projects.length],
+  };
+}
+
+export default function ProjectPage({ nextProject, previousProject, project }) {
   const [fullscreenIndex, setFullscreenIndex] = useState(null);
-  const gallery = project.gallery || [];
+  const gallery = project.gallery || {};
+  const galleryMedia = gallery.media || [];
+
+  const [carouselIndex, setCarouselIndex] = useState(0);
 
   const navigateFullscreen = useCallback(
     (direction) => {
       setFullscreenIndex((currentIndex) => {
-        if (currentIndex === null || gallery.length === 0) return currentIndex;
+        if (currentIndex === null || galleryMedia.length === 0) return currentIndex;
 
-        return (currentIndex + direction + gallery.length) % gallery.length;
+        return (currentIndex + direction + galleryMedia.length) % galleryMedia.length;
       });
     },
-    [gallery.length],
+    [galleryMedia.length],
   );
-
-  const ProjectCredits = () => {
-    return (
-      <ul className={styles.projectCredits} typo="h3 compensate-bottom">
-        {project.credits?.map((credit) => {
-          return (
-            <li className={styles.creditContainer}>
-              <span className={styles.creditRole} typo="bold">
-                {credit.role}
-              </span>
-              <div className={styles.creditEntries}>
-                {credit.entries.map((entry) => {
-                  return <div className={styles.creditEntry}>{entry}</div>;
-                })}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
 
   return (
     <main className={styles.main}>
       <section className={styles.gallery} aria-label={`${project.title} gallery`}>
-        {gallery.map((item, index) => (
-          <button
-            key={item._key || `${project._id}-gallery-${index}`}
-            className={styles.galleryMedium}
-            type="button"
-            onClick={() => setFullscreenIndex(index)}
-          >
-            <Media medium={item.medium} eager={index === 0} />
-          </button>
-        ))}
+        <Carousel
+          array={galleryMedia}
+          className={styles.projectCarousel}
+          contained
+          fitMediaToBounds
+          onIndexChange={setCarouselIndex}
+        />
       </section>
-      <section className={styles.projectInfo}>
-        <div>
-          <div typo="h3 bold compensate-top">{project.title}</div>
-          <Text text={project.description} typo="h3" />
-        </div>
+      <section className={styles.projectInfoContainer}>
+        <div className={styles.projectInfo}>
+          <ProjectTitle project={project} />
 
-        <ProjectCredits />
+          <div className={styles.projectCredits}>
+            <ProjectCredits project={project} />
+            <ProjectMediaCredit project={project} carouselIndex={carouselIndex} />
+          </div>
+        </div>
+        <ProjectNavigation
+          nextProject={nextProject}
+          previousProject={previousProject}
+          className={styles.projectNavigation}
+        />
       </section>
       <FullscreenView
         activeIndex={fullscreenIndex}
-        gallery={gallery}
+        gallery={galleryMedia}
         onClose={() => setFullscreenIndex(null)}
         onNavigate={navigateFullscreen}
       />
@@ -89,20 +101,25 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const [site, project] = await Promise.all([getSite(), getProject(params?.slug)]);
+  const currentSlug = params?.slug;
+  const [site, project, projects] = await Promise.all([getSite(), getProject(currentSlug), getProjects()]);
 
   if (!project) {
     return {
       notFound: true,
-      revalidate: 60,
+      revalidate: 5,
     };
   }
+
+  const { nextProject, previousProject } = getAdjacentProjects(projects, currentSlug);
 
   return {
     props: {
       site,
       project,
+      nextProject,
+      previousProject,
     },
-    revalidate: 60,
+    revalidate: 5,
   };
 }

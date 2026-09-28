@@ -9,6 +9,7 @@ import {portableText} from './types/portableText'
 import {link} from './types/link'
 import {gallery} from './types/media/gallery'
 import {press} from './press'
+import {category} from './types/category'
 
 export const schemaTypes = [
   site,
@@ -21,4 +22,5 @@ export const schemaTypes = [
   portableText,
   link,
   press,
+  category,
 ]

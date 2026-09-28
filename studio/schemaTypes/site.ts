@@ -38,69 +38,39 @@ export const site = defineType({
     defineField({
       name: 'themeColors',
       type: 'object',
-      options: {columns: 2},
       fields: [
         defineField({
-          name: 'regular',
-          title: 'Regular ⚪️',
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'fontColor',
-              title: 'Font Color',
-              description:
-                'Hex color used for the font when default mode is active (example: #0050ff)',
-              type: 'string',
-              validation: (Rule) =>
-                Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
-                  name: 'hex color',
-                  invert: false,
-                }),
+          name: 'fontColor',
+          title: 'Font Color',
+          description: 'Hex color used for the font on the site (example: #66a3ff)',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
+              name: 'hex color',
+              invert: false,
             }),
-            defineField({
-              name: 'backgroundColor',
-              title: 'Background Color',
-              description:
-                'Hex color used for the background when default mode is active (example: #66a3ff)',
-              type: 'string',
-              validation: (Rule) =>
-                Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
-                  name: 'hex color',
-                  invert: false,
-                }),
-            }),
-          ],
         }),
         defineField({
-          name: 'yellow',
-          title: 'Yellow 🟡',
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'fontColor',
-              title: 'Font Color',
-              description:
-                'Hex color used for the font when yellow mode is active (example: #0050ff)',
-              type: 'string',
-              validation: (Rule) =>
-                Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
-                  name: 'hex color',
-                  invert: false,
-                }),
+          name: 'backgroundColor',
+          title: 'Background Color',
+          description: 'Hex color used for the background (example: #66a3ff)',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
+              name: 'hex color',
+              invert: false,
             }),
-            defineField({
-              name: 'backgroundColor',
-              title: 'Background Color',
-              description:
-                'Hex color used for the background when yellow mode is active (example: #66a3ff)',
-              type: 'string',
-              validation: (Rule) =>
-                Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
-                  name: 'hex color',
-                  invert: false,
-                }),
+        }),
+        defineField({
+          name: 'highlightColor',
+          title: 'Highlight Color',
+          description: 'Hex color used when an item is hovered/selected.',
+          type: 'string',
+          validation: (Rule) =>
+            Rule.regex(/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
+              name: 'hex color',
+              invert: false,
             }),
-          ],
         }),
       ],
     }),
@@ -135,13 +105,16 @@ export const site = defineType({
         },
       ],
     }),
+    defineField({name: 'googleMaps', title: 'Google Maps Link', type: 'string'}),
     defineField({
       name: 'email',
       type: 'string',
     }),
     defineField({
       name: 'phone',
-      type: 'string',
+      title: 'Phone',
+      type: 'array',
+      of: [{type: 'string'}],
     }),
     defineField({
       name: 'socials',
@@ -151,8 +124,9 @@ export const site = defineType({
         {
           type: 'object',
           fields: [
-            {name: 'platform', title: 'Platform', type: 'string'},
-            {name: 'link', title: 'url', type: 'string'},
+            {name: 'platform', type: 'string'},
+            {name: 'handle', type: 'string'},
+            {name: 'link', type: 'string'},
           ],
         },
       ],

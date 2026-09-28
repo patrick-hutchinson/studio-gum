@@ -1,0 +1,52 @@
+.projectTitle {
+  color: var(--foreground) !important;
+}
+
+.projectCredits {
+  .creditGroup {
+    display: inline;
+    overflow-wrap: anywhere;
+    margin-right: var(--margin-6);
+  }
+
+  .creditLead {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: baseline;
+  }
+
+  .creditContainer {
+    margin-right: var(--margin-6);
+
+    .creditEntries {
+      .creditEntry {
+      }
+    }
+  }
+}
+
+.projectNavigation {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--margin);
+  align-items: end;
+}
+
+.projectNavigationLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mediaCredit {
+  // display: flex;
+  // align-items: start;
+  // flex-direction: row;
+  // justify-content: end;
+  text-align: right;
+
+  .creditLead {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: baseline;
+  }
+}

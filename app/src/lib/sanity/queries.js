@@ -9,25 +9,25 @@ export const siteQuery = `*[_type=="site"][0]{
   },
   description,
   address,
+  googleMaps,
   email,
   phone,
   socials[]{
     platform,
+    handle,
     link
   },
 }`;
 
 export const aboutPageQuery = `*[_type=="aboutPage"][0]{
   lead,
-  credits[]{
-    role,
-    entries
-  },
+  currentTeam,
+  pastTeam,
   portrait[0] ${mediaAssetFragment},
 }`;
 
-export const contactPageQuery = `*[_type=="contactPage"][0]{
-  lead,
+export const videoPageQuery = `*[_type=="videoPage"][0]{
+  videos[] ${mediaAssetFragment}
 }`;
 
 const projectFields = `{
@@ -44,7 +44,10 @@ const projectFields = `{
     entries
   },
   thumbnail[0] ${mediaAssetFragment},
-  gallery[] ${mediaAssetFragment},
+  gallery{
+    credit,
+    media[] ${mediaAssetFragment},
+  },
   link,
   slug
 }`;

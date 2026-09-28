@@ -8,8 +8,7 @@
   --margin-4: 40px;
   --margin-5: 25px;
   --margin-6: 10px;
-  --margin-7: 9px;
-  --margin-8: 5px;
+  --margin-7: 5px;
   --margin-debug-1: #2ee844;
   --margin-debug-2: #e12ee8;
   --margin-debug-3: #e82e4b;
@@ -17,15 +16,13 @@
   --margin-debug-5: #e8fd1c;
   --margin-debug-6: #e8842e;
   --margin-debug-7: #0a00ff;
-  --margin-debug-8: #00ebff;
 
-  --header-height: 18px;
-  --margin: var(--margin-6);
+  --margin: var(--margin-7);
 
   --shell-height: calc(100vh - (2 * var(--margin)));
   --content-width: calc(100vw - 2 * var(--margin));
 
-  --content-height: calc(100vh - (3 * var(--margin)) - var(--header-height));
+  --content-height: calc(100vh - (2 * var(--margin)));
 
   --opacity: 0.4;
   --transtition: 0.4s ease-in-out;
@@ -108,7 +105,7 @@ button {
 }
 
 @media screen and (min-width: 769px) {
-  :root {
+  /* :root {
     --margin-1: 270px;
     --margin-2: 135px;
     --margin-3: 60px;
@@ -117,9 +114,7 @@ button {
     --margin-6: 15px;
     --margin-7: 6px;
     --margin-8: 5px;
-
-    --header-height: 18px;
-  }
+  } */
 }
 
 .pageTransitionRoot {

@@ -22,6 +22,17 @@ export const project = defineType({
     defineField({name: 'thumbnail', title: 'Thumbnail', type: 'mediaAsset'}),
     defineField({name: 'gallery', title: 'Gallery', type: 'gallery'}),
     defineField({
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: 'category'}],
+        }),
+      ],
+    }),
+    defineField({
       name: 'credits',
       type: 'array',
       of: [
@@ -53,10 +64,12 @@ export const project = defineType({
   preview: {
     select: {
       title: 'title',
+      thumbnail: 'thumbnail.0.file',
     },
-    prepare({title}) {
+    prepare({title, thumbnail}) {
       return {
         title,
+        media: thumbnail,
       }
     },
   },

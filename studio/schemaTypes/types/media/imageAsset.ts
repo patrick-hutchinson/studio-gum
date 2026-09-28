@@ -29,21 +29,26 @@ export const imageAsset = defineType({
       type: 'image',
       options: {hotspot: true},
     }),
-    defineField({name: 'caption', type: 'string'}),
-    defineField({name: 'subcaption', type: 'string'}),
-    defineField({name: 'copyright', type: 'string'}),
+    defineField({name: 'caption', type: 'string', hidden: true}),
+    defineField({
+      name: 'credit',
+      title: 'Credit',
+      description:
+        'Compila solo se questa immagine ha un credito diverso da quello della galleria.',
+      type: 'string',
+    }),
   ],
   preview: {
     select: {
       file: 'file',
       caption: 'caption',
-      copyright: 'copyright',
+      credit: 'credit',
       uploadedAt: 'file.asset._createdAt',
       size: 'file.asset.size',
     },
-    prepare({file, caption, copyright, uploadedAt, size}) {
+    prepare({file, caption, credit, uploadedAt, size}) {
       const title = getPreviewString(caption).trim() || 'Image'
-      const subtitleParts = [copyright?.trim() || `Uploaded ${formatDate(uploadedAt)}`]
+      const subtitleParts = [credit?.trim() || `Uploaded ${formatDate(uploadedAt)}`]
       const sizeLabel = formatMegabytes(size)
 
       if (sizeLabel) subtitleParts.push(sizeLabel)

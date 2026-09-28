@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import FullscreenView from "@/components/FullscreenView/FullscreenView";
 import Media from "@/components/Media/Media";
 import { getPress, getSite } from "@/lib/sanity";
-import styles from "@/styles/pages/Press.module.scss";
+import styles from "@/styles/pages/PressPage.module.scss";
 
 export default function Press({ press }) {
   const [fullscreenIndex, setFullscreenIndex] = useState(null);
@@ -24,12 +24,7 @@ export default function Press({ press }) {
     <div className={`${styles.page} page`}>
       <main className={`${styles.main} main`}>
         {press?.map((entry, index) => (
-          <button
-            key={entry._id}
-            className={styles.cover}
-            type="button"
-            onClick={() => setFullscreenIndex(index)}
-          >
+          <button key={entry._id} className={styles.cover} type="button" onClick={() => setFullscreenIndex(index)}>
             <Media medium={entry.cover?.medium} />
           </button>
         ))}
@@ -52,6 +47,6 @@ export async function getStaticProps() {
       site,
       press,
     },
-    revalidate: 60,
+    revalidate: 5,
   };
 }

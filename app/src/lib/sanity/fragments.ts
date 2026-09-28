@@ -20,14 +20,19 @@ export const mediaAssetFragment = `{
     "status": select(_type == "videoAsset" => file.asset->status, true => null),
     "assetId": select(_type == "videoAsset" => file.asset->assetId, true => null),
     "playbackId": select(_type == "videoAsset" => file.asset->playbackId, true => null),
+    "duration": select(_type == "videoAsset" => file.asset->data.duration, true => null),
+    "staticRenditions": select(
+      _type == "videoAsset" => coalesce(file.asset->data.static_renditions.files, file.asset->static_renditions.files, []),
+      true => null
+    ),
     "aspect_ratio": select(_type == "videoAsset" => file.asset->data.aspect_ratio,
       true => null
     ),
 
 
-    "copyright": select(
-      _type == "imageAsset" => copyright,
-      _type == "videoAsset" => copyright,
+    "credit": select(
+      _type == "imageAsset" => credit,
+      _type == "videoAsset" => credit,
       true => null
     ),
 
@@ -59,7 +64,7 @@ export const imageAssetFragment = `{
     "width": file.asset->metadata.dimensions.width,
     "height": file.asset->metadata.dimensions.height,
 
-    copyright,
+    credit,
     caption,
     subcaption,
   }
