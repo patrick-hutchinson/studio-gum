@@ -27,9 +27,11 @@ export function getSanityClient() {
 }
 
 function normalizeSite(site) {
+  if (!site) return {};
+
   return {
     ...site,
-    faviconUrl: site?.favicon?.asset?.url,
+    faviconUrl: site.favicon?.asset?.url || null,
   };
 }
 

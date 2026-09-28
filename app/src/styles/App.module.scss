@@ -27,7 +27,6 @@
 .alley {
   position: sticky;
   top: var(--margin);
-  margin: var(--margin) 0;
 
   grid-column: 9 / 10;
   grid-row: 1;
@@ -64,6 +63,7 @@
   height: auto;
   transition: transform 0.25s ease-in-out;
   cursor: pointer;
+  margin-top: var(--margin);
 }
 
 .menuButton.showMenu {
