@@ -20,7 +20,7 @@ const ProjectNavigation = ({ nextProject, previousProject }) => {
     <nav className={styles.projectNavigation} aria-label="Project navigation">
       {previousHref ? (
         <Link className={styles.projectNavigationLink} href={previousHref}>
-          <span typo="label">(Prev)</span>
+          <span typo="label shift">(Prev)</span>
           <span typo="body">
             <SanityPreviewValue value={previousProject.title} fieldTitle="Previous project title" />
           </span>
@@ -28,7 +28,7 @@ const ProjectNavigation = ({ nextProject, previousProject }) => {
       ) : null}
       {nextHref ? (
         <Link className={styles.projectNavigationLink} href={nextHref}>
-          <span typo="label">(Next)</span>
+          <span typo="label shift">(Next)</span>
           <span typo="body">
             <SanityPreviewValue value={nextProject.title} fieldTitle="Next project title" />
           </span>

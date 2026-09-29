@@ -11,7 +11,7 @@ export default function ContactPage({ site }) {
       <main className={`${styles.main} main`}>
         <section className={styles.contactTextContainer}>
           <div>
-            <span typo="label">(Address)</span>
+            <span typo="label shift">(Address)</span>
             {site?.googleMaps ? (
               <a href={site.googleMaps} target="_blank" typo="body">
                 <SanityPreviewValue value={addressText} fieldTitle="Address" />
@@ -24,7 +24,7 @@ export default function ContactPage({ site }) {
             )}
           </div>
           <div>
-            <span typo="label">(E—mail)</span>
+            <span typo="label shift">(E—mail)</span>
             {site?.email ? (
               <a href={`mailto:${site.email}`} typo="body">
                 {site.email}
@@ -34,7 +34,7 @@ export default function ContactPage({ site }) {
             )}
           </div>
           <div>
-            <span typo="label">(Phone)</span>
+            <span typo="label shift">(Phone)</span>
             <span typo="body">
               {site?.phone?.length ? (
                 site.phone.map((entry, index) => {
@@ -54,7 +54,7 @@ export default function ContactPage({ site }) {
                 site.socials.map((entry, index) => {
                   return (
                     <span key={index}>
-                      <span typo="label">
+                      <span typo="label shift">
                         (<SanityPreviewValue value={entry.platform} fieldTitle="Social platform" />)
                       </span>
                       {entry.link ? (

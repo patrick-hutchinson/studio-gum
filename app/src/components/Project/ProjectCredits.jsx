@@ -20,7 +20,7 @@ const ProjectCredits = ({ project }) => {
           return (
             <span className={styles.creditGroup} key={credit.role}>
               <span className={styles.creditLead}>
-                <span className={styles.creditRole} typo="label">
+                <span className={styles.creditRole} typo="label shift">
                   ({credit.role || <SanityPreviewFallback as="span" fieldTitle="Credit role" />})
                 </span>
                 <span className={styles.creditEntry} typo="body">
@@ -34,7 +34,7 @@ const ProjectCredits = ({ project }) => {
         return (
           <span className={styles.creditGroup} key={credit.role}>
             <span className={styles.creditLead}>
-              <span className={styles.creditRole} typo="label">
+              <span className={styles.creditRole} typo="label shift">
                 ({credit.role || <SanityPreviewFallback as="span" fieldTitle="Credit role" />})
               </span>
               <span className={styles.creditEntry} typo="body">

@@ -130,7 +130,7 @@ const FullscreenView = ({ activeIndex, gallery, onClose, onNavigate }) => {
       ) : null}
 
       <div className={styles.counter} typo="marker bold compensate-bottom">
-        <span typo="label">(N°)</span>
+        <span typo="label shift">(N°)</span>
         <span typo="body">
           {formattedActiveIndex}/{gallery.length}
         </span>

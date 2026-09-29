@@ -8,7 +8,7 @@ export default function About({ aboutPage }) {
   const CurrentTeam = ({ team }) => {
     return (
       <div>
-        <span typo="label">(Current Team)</span>
+        <span typo="label shift">(Current Team)</span>
         <span typo="body">
           <SanityPreviewValue value={team} fieldTitle="Current team">
             {team?.join(", ")}
@@ -21,7 +21,7 @@ export default function About({ aboutPage }) {
   const PastTeam = ({ team }) => {
     return (
       <div>
-        <span typo="label">(Past Team)</span>
+        <span typo="label shift">(Past Team)</span>
         <span typo="body">
           <SanityPreviewValue value={team} fieldTitle="Past team">
             {team?.join(", ")}
