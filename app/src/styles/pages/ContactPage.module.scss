@@ -1,0 +1,10 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--margin);
+  row-gap: var(--margin);
+
+  .contactTextContainer {
+    grid-column: 9 / 14;
+  }
+}

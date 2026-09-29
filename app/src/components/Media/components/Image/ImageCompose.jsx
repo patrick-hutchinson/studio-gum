@@ -4,7 +4,7 @@ import Image from "./Image";
 import styles from "../../Media.module.css";
 import Placeholder from "../Placeholder";
 
-const ImageCompose = ({ medium, className, eager = false, objectFit, objectPosition }) => {
+const ImageCompose = ({ medium, className, eager = false, objectFit, objectPosition, onLoad }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
@@ -16,6 +16,7 @@ const ImageCompose = ({ medium, className, eager = false, objectFit, objectPosit
         eager={eager}
         objectFit={objectFit}
         objectPosition={objectPosition}
+        onLoad={onLoad}
       />
     </div>
   );

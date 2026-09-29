@@ -62,6 +62,11 @@ export const projectsQuery = `*[_type=="project"] | order(orderRank asc, title a
 
 export const projectQuery = `*[_type=="project" && slug.current == $slug][0] ${projectFields}`;
 
+export const categoriesQuery = `*[_type=="category"] | order(name asc) {
+  _id,
+  name
+}`;
+
 export const projectSlugsQuery = `*[_type=="project" && defined(slug.current)][]{
   "slug": slug.current
 }`;

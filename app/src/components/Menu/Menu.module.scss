@@ -1,0 +1,97 @@
+.menu {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  // width: 100%;
+  padding: var(--margin);
+  height: calc(var(--fs-3) + (2 * var(--margin)));
+  width: calc(var(--fs-3) + (2 * var(--margin)));
+  min-width: 0;
+  z-index: 10;
+  background: var(--background);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.menu.showMenu {
+  width: 100%;
+}
+
+.menuButton {
+  width: calc(var(--fs-3) * 1);
+  height: calc(var(--fs-3) * 1);
+  transition: transform 0.25s ease-in-out;
+  cursor: pointer;
+
+  z-index: 10;
+  position: absolute;
+}
+
+.menuButton img {
+  width: 30px;
+  height: 30px;
+}
+
+.showMenu .menuButton {
+  transform: rotate(45deg);
+}
+
+.menuAnimation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  row-gap: var(--margin);
+  padding: 0 var(--margin);
+
+  .navigation {
+    padding-left: 40px;
+    margin-top: calc(var(--margin) * -1);
+    grid-column: 1 / 6;
+  }
+
+  .filters {
+    grid-column: 7 / -1;
+    margin-top: calc(var(--margin) * -1);
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: start;
+      align-items: center;
+
+      &::before {
+        content: "(";
+      }
+      &::after {
+        content: ")";
+      }
+    }
+
+    li:not(:last-of-type)::after {
+      content: ", ";
+      margin-right: var(--margin);
+    }
+
+    button {
+      all: unset;
+      font-size: var(--fs-4) !important;
+      line-height: var(--lh-4) !important;
+
+      transition: color 0.4s ease-in-out;
+      cursor: pointer;
+    }
+
+    button:hover {
+      color: var(--focus);
+    }
+
+    .selectedFilter {
+      color: var(--focus);
+    }
+  }
+}

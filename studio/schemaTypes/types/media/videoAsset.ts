@@ -1,4 +1,6 @@
+import {createElement} from 'react'
 import {defineType, defineField} from 'sanity'
+import {MuxVideoPreview} from '../../../components/MuxVideoPreview'
 
 export const videoAsset = defineType({
   name: 'videoAsset',
@@ -30,13 +32,14 @@ export const videoAsset = defineType({
   ],
   preview: {
     select: {
+      asset: 'file.asset',
       file: 'file',
       subtitle: 'caption',
     },
-    prepare({file, subtitle}) {
+    prepare({asset, file, subtitle}) {
       return {
         title: 'Video',
-        media: file,
+        media: asset ? () => createElement(MuxVideoPreview, {asset}) : file,
         subtitle: subtitle,
       }
     },

@@ -1,6 +1,6 @@
 import { getSite } from "@/lib/sanity";
 import SanityPreviewFallback, { SanityPreviewValue } from "@/components/SanityPreviewFallback";
-import styles from "@/styles/Contact.module.scss";
+import styles from "@/styles/pages/ContactPage.module.scss";
 
 export default function ContactPage({ site }) {
   const address = site?.address;

@@ -22,7 +22,9 @@
   --shell-height: calc(100vh - (2 * var(--margin)));
   --content-width: calc(100vw - 2 * var(--margin));
 
-  --content-height: calc(100vh - (2 * var(--margin)));
+  --header-height: var(--fs-3);
+
+  --content-height: calc(100vh - (3 * var(--margin)) - var(--header-height));
 
   --opacity: 0.4;
   --transtition: 0.4s ease-in-out;

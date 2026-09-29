@@ -9,6 +9,7 @@ const Media = ({
   eager = false,
   objectFit = "contain",
   objectPosition = "center",
+  onLoad,
   paused,
   playVideo = true,
   showPlaceholder = true,
@@ -25,6 +26,7 @@ const Media = ({
           eager={eager}
           objectFit={objectFit}
           objectPosition={objectPosition}
+          onLoad={onLoad}
         />
       );
     case "video":

@@ -1,28 +1,34 @@
 .logoContainer {
   width: 100vw;
-  height: var(--alley-track-width);
-  color: var(--focus);
+  height: calc(var(--fs-3) + (var(--margin) * 2));
+  color: var(--foreground);
 
   position: fixed;
   left: 0;
-  top: calc(var(--margin) + (100vh - (2 * var(--margin))) * (2 / 3)) !important;
+  top: 0 !important;
 
   z-index: 2;
   pointer-events: none;
-  margin-top: var(--margin);
+  // margin-top: var(--margin);
+  background: var(--background);
+  padding: var(--margin) 0;
 }
 
 .logoLetterWrapper {
   position: absolute;
-  top: 0;
-  height: var(--alley-track-width);
+  top: var(--margin);
+  height: var(--fs-3);
   pointer-events: auto;
   transition: left 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.isAnimating {
+  pointer-events: none;
+}
+
 .logoLetter {
   width: auto;
-  height: var(--alley-track-width);
+  height: var(--fs-3);
   max-width: none;
   flex: 0 0 auto;
 }

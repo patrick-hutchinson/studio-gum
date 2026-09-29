@@ -1,12 +1,6 @@
 .main {
-  --main-grid-track: minmax(0, 1fr);
-  --main-grid-special-track: minmax(0, 0.37fr);
-
   display: grid;
-  grid-template-columns:
-    repeat(8, var(--main-grid-track))
-    var(--main-grid-special-track)
-    repeat(4, var(--main-grid-track));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
   row-gap: var(--margin);
 
@@ -35,7 +29,7 @@
 
   .projectInfoContainer {
     display: grid;
-    grid-column: 10 / 14;
+    grid-column: 9 / 14;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     position: sticky;

@@ -5,19 +5,7 @@
   --project-background: #ff0000;
   overflow: hidden;
   display: grid;
-  grid-column: span 4;
-}
-
-.project:nth-child(3n + 1) {
-  grid-column: 1 / span 4;
-}
-
-.project:nth-child(3n + 2) {
-  grid-column: 5 / span 4;
-}
-
-.project:nth-child(3n) {
-  grid-column: 10 / span 4;
+  grid-column: span 2;
 }
 
 .projectLink {
@@ -30,7 +18,7 @@
 .projectInfo {
   grid-area: 1 / 1;
 
-  height: calc((100vh - (2 * var(--margin))) * (2 / 3)) !important;
+  // height: calc((100vh - (2 * var(--margin))) * (2 / 3)) !important;
 }
 
 .thumbnail {
@@ -44,6 +32,12 @@
 
   padding: var(--margin);
   transition: opacity 0.35s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: var(--focus) !important;
 }
 
 .project:hover .projectInfo {
@@ -65,14 +59,8 @@
 }
 
 .main {
-  --main-grid-track: minmax(0, 1fr);
-  --main-grid-special-track: minmax(0, 0.37fr);
-
   display: grid;
-  grid-template-columns:
-    repeat(8, var(--main-grid-track))
-    var(--main-grid-special-track)
-    repeat(4, var(--main-grid-track));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
   row-gap: var(--margin);
 }

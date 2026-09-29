@@ -7,6 +7,7 @@ const LETTERS = ["G", "U", "M"];
 const NEIGHBOR_BREATHING_ROOM = 200;
 const MINIMUM_HOVER_MOVE = 250;
 const MAXIMUM_HOVER_MOVE = 450;
+const LETTER_TRANSITION_DURATION = 1000;
 
 function getCssPixelValue(propertyName, fallbackPropertyName) {
   const rootStyles = window.getComputedStyle(document.documentElement);
@@ -72,10 +73,6 @@ function getRandomPositionWithMoveRange(
   );
 }
 
-function getTotalWidth(widths, gap) {
-  return widths.reduce((total, width) => total + width, 0) + gap * Math.max(0, widths.length - 1);
-}
-
 function getHorizontalBounds(width = 0) {
   const margin = getCssPixelValue("--margin", "--spacing-5");
 
@@ -96,7 +93,9 @@ function getAllowedLandingRanges(min, max, width, blockedBounds) {
 
 const LogoInteraction = ({ menuButtonRef }) => {
   const letterRefs = useRef([]);
+  const animationTimeoutRefs = useRef([]);
   const [letterPositions, setLetterPositions] = useState([]);
+  const [animatingLetterIndexes, setAnimatingLetterIndexes] = useState([]);
 
   const getLetterMetrics = useCallback(() => {
     return letterRefs.current.map((letter) => letter?.getBoundingClientRect().width || 0);
@@ -116,16 +115,23 @@ const LogoInteraction = ({ menuButtonRef }) => {
   const createInitialPositions = useCallback(() => {
     const gap = getCssPixelValue("--spacing-5", "--margin-5");
     const widths = getLetterMetrics();
-    const totalWidth = getTotalWidth(widths, gap);
-    const { min } = getHorizontalBounds();
-    let nextLeft = Math.max(min, (window.innerWidth - totalWidth) / 2);
+    const blockedBounds = getMenuButtonBounds();
+    const positions = [];
 
-    return widths.map((width) => {
-      const left = nextLeft;
-      nextLeft += width + gap;
-      return left;
+    widths.forEach((width, index) => {
+      const { min, max } = getHorizontalBounds(width);
+      const minLeft = index === 0 ? min : positions[index - 1] + widths[index - 1] + gap;
+      const remainingWidth = widths
+        .slice(index + 1)
+        .reduce((total, nextWidth) => total + nextWidth + gap, 0);
+      const maxLeft = Math.max(minLeft, max - remainingWidth);
+      const allowedRanges = getAllowedLandingRanges(minLeft, maxLeft, width, blockedBounds);
+
+      positions[index] = getRandomPositionFromRanges(allowedRanges) ?? getRandomPosition(minLeft, maxLeft);
     });
-  }, [getLetterMetrics]);
+
+    return positions;
+  }, [getLetterMetrics, getMenuButtonBounds]);
 
   const clampPositions = useCallback((positions) => {
     const gap = getCssPixelValue("--spacing-5", "--margin-5");
@@ -247,11 +253,29 @@ const LogoInteraction = ({ menuButtonRef }) => {
 
     return () => {
       window.removeEventListener("resize", updateInitialPositions);
+      animationTimeoutRefs.current.forEach((timeout) => window.clearTimeout(timeout));
     };
   }, [clampPositions, createInitialPositions, moveAwayFromMenuButton]);
 
+  const setLetterIsAnimating = useCallback((letterIndex) => {
+    window.clearTimeout(animationTimeoutRefs.current[letterIndex]);
+
+    setAnimatingLetterIndexes((currentIndexes) => {
+      if (currentIndexes.includes(letterIndex)) return currentIndexes;
+      return [...currentIndexes, letterIndex];
+    });
+
+    animationTimeoutRefs.current[letterIndex] = window.setTimeout(() => {
+      setAnimatingLetterIndexes((currentIndexes) => currentIndexes.filter((index) => index !== letterIndex));
+    }, LETTER_TRANSITION_DURATION);
+  }, []);
+
   const randomizeLetterPosition = useCallback(
     (letterIndex) => {
+      if (animatingLetterIndexes.includes(letterIndex)) return;
+
+      setLetterIsAnimating(letterIndex);
+
       setLetterPositions((currentPositions) => {
         const widths = getLetterMetrics();
         const currentLayout = currentPositions.length ? [...currentPositions] : clampPositions(createInitialPositions());
@@ -280,7 +304,9 @@ const LogoInteraction = ({ menuButtonRef }) => {
       createRoomAroundLetter,
       getLetterMetrics,
       getMenuButtonBounds,
+      animatingLetterIndexes,
       moveAwayFromMenuButton,
+      setLetterIsAnimating,
     ],
   );
 
@@ -288,7 +314,9 @@ const LogoInteraction = ({ menuButtonRef }) => {
     <div className={styles.logoContainer}>
       {LETTERS.map((letter, index) => (
         <span
-          className={styles.logoLetterWrapper}
+          className={`${styles.logoLetterWrapper} ${
+            animatingLetterIndexes.includes(index) ? styles.isAnimating : ""
+          }`}
           key={letter}
           ref={(element) => {
             letterRefs.current[index] = element;

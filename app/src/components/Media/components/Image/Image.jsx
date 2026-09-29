@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 
-const Image = ({ medium, setIsLoaded, eager = false, objectFit, objectPosition }) => {
+const Image = ({ medium, setIsLoaded, eager = false, objectFit, objectPosition, onLoad }) => {
   const imageSource = medium.url;
 
   const resolutionWidth = medium.width;
@@ -36,7 +36,10 @@ const Image = ({ medium, setIsLoaded, eager = false, objectFit, objectPosition }
         decoding="sync"
         draggable={false}
         style={imageStyle}
-        onLoad={() => setIsLoaded?.(true)}
+        onLoad={() => {
+          setIsLoaded?.(true);
+          onLoad?.();
+        }}
       />
     </div>
   );

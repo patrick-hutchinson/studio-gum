@@ -1,12 +1,6 @@
 .main {
-  --main-grid-track: minmax(0, 1fr);
-  --main-grid-special-track: minmax(0, 0.37fr);
-
   display: grid;
-  grid-template-columns:
-    repeat(8, var(--main-grid-track))
-    var(--main-grid-special-track)
-    repeat(4, var(--main-grid-track));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
   row-gap: var(--margin);
 }
@@ -42,16 +36,4 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
-}
-
-.video:nth-child(3n + 1) {
-  grid-column: 1 / span 4;
-}
-
-.video:nth-child(3n + 2) {
-  grid-column: 5 / span 4;
-}
-
-.video:nth-child(3n) {
-  grid-column: 10 / span 4;
 }

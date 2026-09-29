@@ -63,8 +63,11 @@
   letter-spacing: var(--ls-4);
 
   display: inline-block;
-  transform: translateY(calc(-0.25 * var(--fs-3)));
   margin-right: var(--margin-7);
+}
+
+[typo~="shift"] {
+  transform: translateY(calc(-0.25 * var(--fs-3)));
 }
 
 [typo~="label"] p {

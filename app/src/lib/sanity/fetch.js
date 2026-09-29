@@ -7,6 +7,7 @@ import {
   aboutPageQuery,
   pressQuery,
   videoPageQuery,
+  categoriesQuery,
 } from "./queries";
 
 export function getSanityClient() {
@@ -51,6 +52,12 @@ export async function getProjects() {
   const projects = await getSanityClient().fetch(projectsQuery);
 
   return projects || [];
+}
+
+export async function getCategories() {
+  const categories = await getSanityClient().fetch(categoriesQuery);
+
+  return categories || [];
 }
 
 export async function getPress() {

@@ -1,0 +1,5 @@
+.navigation ul {
+  display: flex;
+  gap: var(--margin-6);
+  transform: translateY(calc(var(--fs-2) * 0.05));
+}

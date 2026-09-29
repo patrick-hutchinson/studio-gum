@@ -11,6 +11,7 @@ import MarginDebugOverlay from "@/components/MarginDebugOverlay/MarginDebugOverl
 import { AnimatePresence, motion } from "framer-motion";
 
 import Head from "next/head";
+
 import Menu from "@/components/Menu/Menu";
 
 import LogoInteraction from "@/components/LogoInteraction/LogoInteraction";
@@ -34,21 +35,34 @@ const pageTransitionVariants = {
   }),
 };
 
+const ALL_FILTER_ID = "all";
+
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const site = pageProps.site || {};
   const forcedTheme = router.pathname === "/press" ? "yellow" : "light";
-  const shouldShowIndexIntroRef = useRef(router.pathname === "/");
   const shellRef = useRef(null);
   const contentRef = useRef(null);
   const pageTransitionRef = useRef(null);
+
   const menuButtonRef = useRef(null);
 
   const [exitingPageBox, setExitingPageBox] = useState(null);
 
-  const [showMenu, setShowMenu] = useState(false);
-  const [hasEnteredPage, setHasEnteredPage] = useState(!shouldShowIndexIntroRef.current);
-  const isIndexIntro = !hasEnteredPage;
+  const [selectedFilters, setSelectedFilters] = useState([ALL_FILTER_ID]);
+
+  const toggleFilter = useCallback((filterId) => {
+    setSelectedFilters((currentFilters) => {
+      if (filterId === ALL_FILTER_ID) return [ALL_FILTER_ID];
+
+      const activeFilters = currentFilters.includes(ALL_FILTER_ID) ? [] : currentFilters;
+      const nextFilters = activeFilters.includes(filterId)
+        ? activeFilters.filter((currentFilter) => currentFilter !== filterId)
+        : [...activeFilters, filterId];
+
+      return nextFilters.length ? nextFilters : [ALL_FILTER_ID];
+    });
+  }, []);
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
@@ -91,73 +105,35 @@ export default function App({ Component, pageProps }) {
       >
         <ViewportProvider>
           <DeviceProvider>
-            <div
-              ref={shellRef}
-              className={`${styles.shell} ${isIndexIntro ? styles.indexIntro : ""}`}
-              onClick={isIndexIntro ? () => setHasEnteredPage(true) : undefined}
-            >
-              {hasEnteredPage && (
-                <motion.div
-                  className={styles.alley}
-                  typo="marker bold compensate"
-                  initial={shouldShowIndexIntroRef.current ? { opacity: 0 } : false}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                >
-                  <AnimatePresence>
-                    {showMenu && (
-                      <motion.div
-                        key="menu"
-                        className={styles.menuAnimation}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                      >
-                        <div className={styles.menu}>
-                          <Menu />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <img
-                    className={`${styles.menuButton} ${showMenu ? styles.showMenu : null} `}
-                    ref={menuButtonRef}
-                    src="/icons/plus.svg"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                  />
-                </motion.div>
-              )}
-
+            <div ref={shellRef} className={styles.shell}>
               <LogoInteraction menuButtonRef={menuButtonRef} />
 
-              {hasEnteredPage && (
-                <motion.div
-                  ref={contentRef}
-                  className={`${styles.content} pageTransitionRoot`}
-                  initial={shouldShowIndexIntroRef.current ? { opacity: 0 } : false}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                >
-                  <MarginDebugOverlay />
+              <Menu
+                categories={pageProps.categories || []}
+                menuButtonRef={menuButtonRef}
+                selectedFilters={selectedFilters}
+                onToggleFilter={toggleFilter}
+              />
 
-                  <AnimatePresence custom={exitingPageBox} initial={false}>
-                    <motion.div
-                      animate="animate"
-                      className="pageTransition"
-                      custom={exitingPageBox}
-                      exit="exit"
-                      initial="initial"
-                      key={router.asPath}
-                      ref={pageTransitionRef}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      variants={pageTransitionVariants}
-                    >
-                      <Component {...pageProps} />
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
-              )}
+              <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
+                <MarginDebugOverlay />
+
+                <AnimatePresence custom={exitingPageBox} initial={false}>
+                  <motion.div
+                    animate="animate"
+                    className="pageTransition"
+                    custom={exitingPageBox}
+                    exit="exit"
+                    initial="initial"
+                    key={router.asPath}
+                    ref={pageTransitionRef}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    variants={pageTransitionVariants}
+                  >
+                    <Component {...pageProps} selectedFilters={selectedFilters} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </DeviceProvider>
         </ViewportProvider>
