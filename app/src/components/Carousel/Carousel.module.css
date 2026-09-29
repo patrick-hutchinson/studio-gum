@@ -90,7 +90,7 @@
   top: 0;
   left: 0;
   z-index: 10;
-  height: 40px;
+  height: calc(var(--fs-3) * 1);
   width: auto;
   opacity: 0;
   pointer-events: none;
