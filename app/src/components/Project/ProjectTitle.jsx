@@ -10,7 +10,7 @@ const ProjectTitle = ({ project }) => {
 
   return (
     <div className={styles.projectTitle}>
-      <span className={styles.categories} typo="label shift">
+      <span className={styles.categories} typo="label">
         {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
       </span>
       <span typo="title">

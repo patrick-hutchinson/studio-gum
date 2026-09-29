@@ -1,3 +1,9 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--margin);
+}
+
 .project {
   position: relative;
   width: 100%;
@@ -6,38 +12,36 @@
   overflow: hidden;
   display: grid;
   grid-column: span 2;
-}
 
-.projectLink {
-  display: grid;
-  color: inherit;
-  text-decoration: none;
-}
+  .projectLink {
+    display: grid;
+    color: inherit;
+    text-decoration: none;
 
-.thumbnail,
-.projectInfo {
-  grid-area: 1 / 1;
+    .thumbnail,
+    .projectInfo {
+      grid-area: 1 / 1;
+    }
 
-  // height: calc((100vh - (2 * var(--margin))) * (2 / 3)) !important;
-}
+    .thumbnail {
+      transition: opacity 0.35s ease-in-out;
+    }
 
-.thumbnail {
-  transition: opacity 0.35s ease-in-out;
-}
+    .projectInfo {
+      opacity: 0;
+      pointer-events: none;
+      background-color: var(--project-background);
 
-.projectInfo {
-  opacity: 0;
-  pointer-events: none;
-  background-color: var(--project-background);
+      padding: var(--margin);
+      transition: opacity 0.35s ease-in-out;
 
-  padding: var(--margin);
-  transition: opacity 0.35s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  color: var(--focus) !important;
+      color: var(--focus) !important;
+    }
+  }
 }
 
 .project:hover .projectInfo {
@@ -56,11 +60,4 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
-}
-
-.main {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--margin);
-  row-gap: var(--margin);
 }

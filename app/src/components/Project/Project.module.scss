@@ -1,5 +1,10 @@
 .projectTitle {
   color: var(--foreground) !important;
+
+  .categories {
+    transform: translateY(calc(-0.3 * var(--fs-2)));
+    margin-right: var(--margin-7);
+  }
 }
 
 .projectCredits {
@@ -7,19 +12,14 @@
     display: inline;
     overflow-wrap: anywhere;
     margin-right: var(--margin-6);
-  }
 
-  .creditLead {
-    display: inline-block;
-    max-width: 100%;
-    vertical-align: baseline;
-  }
+    .creditLead {
+      display: inline-block;
+      max-width: 100%;
+      vertical-align: baseline;
 
-  .creditContainer {
-    margin-right: var(--margin-6);
-
-    .creditEntries {
-      .creditEntry {
+      .creditRole {
+        margin-right: var(--margin-7);
       }
     }
   }
@@ -30,18 +30,18 @@
   justify-content: space-between;
   gap: var(--margin);
   align-items: end;
-}
 
-.projectNavigationLink {
-  color: inherit;
-  text-decoration: none;
+  .projectNavigationLink {
+    color: inherit;
+    text-decoration: none;
+
+    .projectNavigationLabel {
+      margin-right: var(--margin-7);
+    }
+  }
 }
 
 .mediaCredit {
-  // display: flex;
-  // align-items: start;
-  // flex-direction: row;
-  // justify-content: end;
   text-align: right;
 
   .creditLead {

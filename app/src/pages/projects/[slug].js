@@ -68,7 +68,7 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
         )}
       </section>
       <section className={styles.projectInfoContainer}>
-        <div className={styles.projectInfo}>
+        <div className={styles.projectInfo} typo="body compensate-top">
           <ProjectTitle project={project} />
 
           <div className={styles.projectCredits}>

@@ -63,7 +63,7 @@
   letter-spacing: var(--ls-4);
 
   display: inline-block;
-  margin-right: var(--margin-7);
+  /* margin-right: var(--margin-7); */
 }
 
 [typo~="shift"] {
@@ -77,13 +77,21 @@
 
 /* Font Compensation */
 [typo~="label"][typo~="compensate-top"] {
-  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   --h3-overshoot: 0.18em;
   margin-top: calc(var(--h3-overshoot) * -1);
 }
 
 [typo~="label"][typo~="compensate-bottom"] {
-  font-family: "MaisonNeue", Arial, Helvetica, sans-serif;
   --h3-undershoot: 0.15em;
   margin-bottom: calc(var(--h3-undershoot) * -1);
+}
+
+[typo~="body"][typo~="compensate-top"] {
+  --h2-overshoot: 0.12em;
+  margin-top: calc(var(--h2-overshoot) * -1);
+}
+
+[typo~="body"][typo~="compensate-bottom"] {
+  --h2-undershoot: 0.15em;
+  margin-bottom: calc(var(--h2-undershoot) * -1);
 }

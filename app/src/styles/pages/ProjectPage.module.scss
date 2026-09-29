@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
-  row-gap: var(--margin);
+  // row-gap: var(--margin);
 
   .gallery {
     display: grid;
@@ -29,7 +29,7 @@
 
   .projectInfoContainer {
     display: grid;
-    grid-column: 9 / 14;
+    grid-column: 9 / 13;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     position: sticky;
