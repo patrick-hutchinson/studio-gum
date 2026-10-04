@@ -7,8 +7,34 @@
   .contactTextContainer {
     grid-column: 9 / 13;
 
+    .contactEntry {
+      margin-right: var(--margin-7);
+    }
+
     .contactLabel {
       margin-right: var(--margin-7);
     }
   }
+}
+
+/* desktop is default */
+
+@media screen and (max-width: 768px) {
+  .main {
+    .contactTextContainer {
+      grid-column: 1 / span 12;
+    }
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
+}
+
+@media screen and (max-width: 1279px) {
+  /* tablets */
+}
+
+@media screen and (min-width: 2560px) {
+  /* large screens */
 }

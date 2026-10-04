@@ -11,7 +11,7 @@ export default function About({ aboutPage }) {
         <span className={styles.teamLabel} typo="label shift">
           (Current Team)
         </span>
-        <span typo="body">
+        <span typo="tag">
           <SanityPreviewValue value={team} fieldTitle="Current team">
             {team?.join(", ")}
           </SanityPreviewValue>
@@ -26,7 +26,7 @@ export default function About({ aboutPage }) {
         <span className={styles.teamLabel} typo="label shift">
           (Past Team)
         </span>
-        <span typo="body">
+        <span typo="tag">
           <SanityPreviewValue value={team} fieldTitle="Past team">
             {team?.join(", ")}
           </SanityPreviewValue>
@@ -46,13 +46,9 @@ export default function About({ aboutPage }) {
           )}
         </section>
         <section className={styles.aboutTextContainer}>
-          {aboutPage?.lead ? (
-            <Text text={aboutPage.lead} typo="body compensate-top" />
-          ) : (
-            <SanityPreviewFallback fieldTitle="About lead" />
-          )}
+          {aboutPage?.lead ? <Text text={aboutPage.lead} typo="tag" /> : <SanityPreviewFallback fieldTitle="About lead" />}
         </section>
-        <section className={styles.team} typo="body compensate-top">
+        <section className={styles.team} typo="tag">
           <CurrentTeam team={aboutPage?.currentTeam} />
           <PastTeam team={aboutPage?.pastTeam} />
         </section>

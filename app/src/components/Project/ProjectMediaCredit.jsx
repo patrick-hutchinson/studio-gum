@@ -14,7 +14,7 @@ const ProjectMediaCredit = ({ project, carouselIndex }) => {
     <div className={styles.mediaCredit}>
       <span className={styles.creditLead}>
         <span typo="label shift">(Foto)</span>
-        <span typo="body">{credit}</span>
+        <span typo="tag">{credit}</span>
       </span>
     </div>
   );

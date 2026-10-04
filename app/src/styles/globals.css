@@ -42,6 +42,16 @@
   --focus: #eeeeee;
 }
 
+::selection {
+  background: var(--focus);
+  color: #0a0a0a;
+}
+
+[data-theme="yellow"] ::selection {
+  background: #0a0a0a;
+  color: var(--focus);
+}
+
 *,
 *::-webkit-scrollbar {
   scrollbar-width: none;
@@ -106,19 +116,6 @@ button {
   all: unset;
 }
 
-@media screen and (min-width: 769px) {
-  /* :root {
-    --margin-1: 270px;
-    --margin-2: 135px;
-    --margin-3: 60px;
-    --margin-4: 40px;
-    --margin-5: 25px;
-    --margin-6: 15px;
-    --margin-7: 6px;
-    --margin-8: 5px;
-  } */
-}
-
 .pageTransitionRoot {
   display: grid;
 }
@@ -151,4 +148,22 @@ ul,
 li {
   text-decoration: none;
   list-style: none;
+}
+
+/* desktop is default */
+
+@media screen and (max-width: 768px) {
+  /* phones */
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
+}
+
+@media screen and (max-width: 1279px) {
+  /* tablets */
+}
+
+@media screen and (min-width: 2560px) {
+  /* large screens */
 }

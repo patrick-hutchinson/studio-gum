@@ -1,17 +1,13 @@
-.projectTitle {
-  color: var(--foreground) !important;
-
-  .categories {
-    transform: translateY(calc(-0.3 * var(--fs-2)));
-    margin-right: var(--margin-7);
-  }
-}
-
 .projectCredits {
+  line-height: 0.8;
+  text-transform: uppercase;
+
   .creditGroup {
     display: inline;
     overflow-wrap: anywhere;
-    margin-right: var(--margin-6);
+    margin-right: var(--margin-7);
+    margin-top: -2px;
+    margin-bottom: -2px;
 
     .creditLead {
       display: inline-block;
@@ -42,6 +38,7 @@
 }
 
 .mediaCredit {
+  text-transform: uppercase;
   text-align: right;
 
   .creditLead {
@@ -49,4 +46,20 @@
     max-width: 100%;
     vertical-align: baseline;
   }
+}
+
+@media screen and (max-width: 768px) {
+  /* phones */
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
+}
+
+@media screen and (max-width: 1279px) {
+  /* tablets */
+}
+
+@media screen and (min-width: 2560px) {
+  /* large screens */
 }

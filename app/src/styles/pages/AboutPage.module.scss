@@ -46,3 +46,50 @@
     }
   }
 }
+
+/* desktop is default */
+
+@media screen and (max-width: 768px) {
+  /* phones */
+
+  .main {
+    row-gap: var(--margin);
+    .portrait {
+      grid-column: 1 / span 12;
+    }
+
+    .aboutTextContainer {
+      height: auto;
+      grid-column: 1 / span 12;
+      margin-bottom: var(--margin-4);
+
+      .projectCredits {
+        .creditContainer {
+          .creditRole {
+            grid-column: 1 / span 12;
+          }
+
+          .creditEntries {
+            grid-column: 1 / span 12;
+          }
+        }
+      }
+    }
+
+    .team {
+      grid-column: 1 / span 12;
+    }
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
+}
+
+@media screen and (max-width: 1279px) {
+  /* tablets */
+}
+
+@media screen and (min-width: 2560px) {
+  /* large screens */
+}

@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
+  row-gap: var(--margin);
 }
 
 .project {
@@ -14,6 +15,7 @@
   grid-column: span 2;
 
   .projectLink {
+    position: relative;
     display: grid;
     color: inherit;
     text-decoration: none;
@@ -28,9 +30,13 @@
     }
 
     .projectInfo {
+      position: absolute;
+      inset: 0;
+      box-sizing: border-box;
       opacity: 0;
       pointer-events: none;
       background-color: var(--project-background);
+      text-transform: uppercase;
 
       padding: var(--margin);
       transition: opacity 0.35s ease-in-out;
@@ -38,8 +44,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-      color: var(--focus) !important;
     }
   }
 }
@@ -60,4 +64,23 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .project {
+    grid-column: span 6;
+  }
+  /* phones */
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
+}
+
+@media screen and (max-width: 1279px) {
+  /* tablets */
+}
+
+@media screen and (min-width: 2560px) {
+  /* large screens */
 }

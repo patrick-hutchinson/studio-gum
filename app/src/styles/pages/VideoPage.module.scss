@@ -3,37 +3,63 @@
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
   // row-gap: var(--margin);
+
+  .video {
+    position: relative;
+    width: 100%;
+    height: auto;
+    --project-background: #ff0000;
+    overflow: hidden;
+    display: grid;
+    grid-column: span 4;
+    padding: 0;
+    border: 0;
+    background-color: var(--project-background);
+    color: inherit;
+    cursor: pointer;
+
+    .thumbnail {
+      grid-area: 1 / 1;
+      transition: opacity 0.35s ease-in-out;
+    }
+
+    &:hover {
+      .thumbnail {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    .colorSampler {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
 }
 
-.video {
-  position: relative;
-  width: 100%;
-  height: auto;
-  --project-background: #ff0000;
-  overflow: hidden;
-  display: grid;
-  grid-column: span 4;
-  padding: 0;
-  border: 0;
-  background-color: var(--project-background);
-  color: inherit;
-  cursor: pointer;
+/* desktop is default */
+
+@media screen and (max-width: 768px) {
+  /* phones */
+
+  .main {
+    .video {
+      grid-column: span 6;
+    }
+  }
 }
 
-.thumbnail {
-  grid-area: 1 / 1;
-  transition: opacity 0.35s ease-in-out;
+@media (max-height: 500px) and (orientation: landscape) {
+  /* short landscape */
 }
 
-.video:hover .thumbnail {
-  opacity: 0;
-  pointer-events: none;
+@media screen and (max-width: 1279px) {
+  /* tablets */
 }
 
-.colorSampler {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
+@media screen and (min-width: 2560px) {
+  /* large screens */
 }

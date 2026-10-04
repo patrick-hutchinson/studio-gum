@@ -20,6 +20,10 @@
   min-height: 0;
 }
 
+.canNavigate {
+  cursor: pointer;
+}
+
 .fullscreenMedia {
   width: 100%;
   height: var(--shell-height);

@@ -23,7 +23,7 @@ const ProjectCredits = ({ project }) => {
                 <span className={styles.creditRole} typo="label shift">
                   ({credit.role || <SanityPreviewFallback as="span" fieldTitle="Credit role" />})
                 </span>
-                <span className={styles.creditEntry} typo="body">
+                <span className={styles.creditEntry} typo="tag">
                   <SanityPreviewFallback as="span" fieldTitle="Credit entries" />
                 </span>
               </span>
@@ -37,12 +37,12 @@ const ProjectCredits = ({ project }) => {
               <span className={styles.creditRole} typo="label shift">
                 ({credit.role || <SanityPreviewFallback as="span" fieldTitle="Credit role" />})
               </span>
-              <span className={styles.creditEntry} typo="body">
+              <span className={styles.creditEntry} typo="tag">
                 {firstEntry}
               </span>
             </span>
             {remainingEntries.length ? (
-              <span className={styles.creditEntry} typo="body">
+              <span className={styles.creditEntry} typo="tag">
                 {`, ${remainingEntries.join(", ")}`}
               </span>
             ) : null}

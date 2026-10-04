@@ -31,6 +31,7 @@ export default function Press({ press }) {
       </main>
       <FullscreenView
         activeIndex={fullscreenIndex}
+        enableNavigation
         gallery={gallery}
         onClose={() => setFullscreenIndex(null)}
         onNavigate={navigateFullscreen}

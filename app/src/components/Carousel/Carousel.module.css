@@ -102,16 +102,15 @@
   opacity: 1;
 }
 
-@media screen and (min-width: 320px) {
+/* Tablets */
+@media screen and (max-width: 1279px) {
 }
 
-/* iPads and other Tablets */
-@media screen and (min-width: 769px) {
+/* Phones */
+@media screen and (max-width: 768px) {
 }
 
-/* Desktop */
-@media screen and (min-width: 1280px) {
-}
+/* Desktop is the default */
 
 /* Large Format Screens */
 @media screen and (min-width: 2560px) {

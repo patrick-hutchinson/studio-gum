@@ -7,7 +7,19 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const ALL_FILTER_ID = "all";
 
-const Filters = ({ categories, selectedFilters, onToggleFilter }) => {
+const menuViewVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { duration: 0.25, ease: "easeInOut", delay: 0.35 },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.25, ease: "easeInOut" },
+  },
+};
+
+const Filters = ({ categories, selectedFilters, onBackToMenu, onToggleFilter }) => {
   if (!categories?.length) return null;
 
   const filters = [{ _id: ALL_FILTER_ID, name: "All" }, ...categories];
@@ -15,18 +27,18 @@ const Filters = ({ categories, selectedFilters, onToggleFilter }) => {
   return (
     <motion.nav
       className={styles.filters}
-      typo="h4"
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: { duration: 0.25, ease: "easeInOut", delay: 0.5 },
-      }}
-      exit={{
-        opacity: 0,
-        transition: { duration: 0.25, ease: "easeInOut" },
-      }}
+      typo="title"
+      variants={menuViewVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
     >
       <ul>
+        <li className={styles.menuReturn}>
+          <button type="button" onClick={onBackToMenu}>
+            Menu
+          </button>
+        </li>
         {filters.map((filter) => {
           const isSelected = selectedFilters.includes(filter._id);
 
@@ -51,6 +63,7 @@ const Filters = ({ categories, selectedFilters, onToggleFilter }) => {
 const Menu = ({ categories = [], menuButtonRef, selectedFilters = [ALL_FILTER_ID], onToggleFilter }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showNavigation, setShowNavigation] = useState(false);
+  const [activeView, setActiveView] = useState("menu");
   const closeTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -66,6 +79,7 @@ const Menu = ({ categories = [], menuButtonRef, selectedFilters = [ALL_FILTER_ID
       setShowNavigation(false);
       closeTimeoutRef.current = window.setTimeout(() => {
         setIsExpanded(false);
+        setActiveView("menu");
       }, 350);
       return;
     }
@@ -79,26 +93,29 @@ const Menu = ({ categories = [], menuButtonRef, selectedFilters = [ALL_FILTER_ID
       <img className={`${styles.menuButton}`} ref={menuButtonRef} src="/icons/plus.svg" onClick={toggleMenu} />
       <AnimatePresence>
         {showNavigation && (
-          <motion.div
-            key="menu"
-            className={styles.menuAnimation}
-          >
-            <motion.div
-              className={styles.navigation}
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: 1,
-                transition: { duration: 0.25, ease: "easeInOut", delay: 0.35 },
-              }}
-              exit={{
-                opacity: 0,
-                transition: { duration: 0.25, ease: "easeInOut" },
-              }}
-            >
-              <Navigation />
-            </motion.div>
-
-            <Filters categories={categories} selectedFilters={selectedFilters} onToggleFilter={onToggleFilter} />
+          <motion.div key="menu" className={styles.menuAnimation}>
+            <AnimatePresence mode="wait">
+              {activeView === "menu" ? (
+                <motion.div
+                  key="menu-overview"
+                  className={styles.navigation}
+                  variants={menuViewVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <Navigation onFilterClick={() => setActiveView("filters")} />
+                </motion.div>
+              ) : (
+                <Filters
+                  key="menu-filters"
+                  categories={categories}
+                  selectedFilters={selectedFilters}
+                  onBackToMenu={() => setActiveView("menu")}
+                  onToggleFilter={onToggleFilter}
+                />
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

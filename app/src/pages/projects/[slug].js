@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 import FullscreenView from "@/components/FullscreenView/FullscreenView";
-import SanityPreviewFallback from "@/components/SanityPreviewFallback";
+import SanityPreviewFallback, { SanityPreviewValue } from "@/components/SanityPreviewFallback";
 
 import { getProject, getProjectSlugs, getProjects, getSite } from "@/lib/sanity";
 
@@ -11,7 +11,7 @@ import ProjectNavigation from "@/components/Project/ProjectNavigation";
 
 import Carousel from "@/components/Carousel/Carousel";
 import styles from "@/styles/pages/ProjectPage.module.scss";
-import ProjectTitle from "@/components/Project/ProjectTitle";
+
 import ProjectMediaCredit from "@/components/Project/ProjectMediaCredit";
 
 function getProjectSlug(project) {
@@ -52,6 +52,24 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
     [galleryMedia.length],
   );
 
+  const ProjectTitle = ({ project }) => {
+    const categories = project.categories
+      ?.map((category) => category.name)
+      .filter(Boolean)
+      .join(", ");
+
+    return (
+      <div className={styles.projectTitle}>
+        <span className={styles.categories} typo="label">
+          {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
+        </span>
+        <span typo="body" className={styles.title}>
+          <SanityPreviewValue value={project.title} fieldTitle="Project title" />
+        </span>
+      </div>
+    );
+  };
+
   return (
     <main className={styles.main}>
       <section className={styles.gallery} aria-label={`${project.title || "Project"} gallery`}>
@@ -68,7 +86,7 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
         )}
       </section>
       <section className={styles.projectInfoContainer}>
-        <div className={styles.projectInfo} typo="body compensate-top">
+        <div className={styles.projectInfo} typo="body">
           <ProjectTitle project={project} />
 
           <div className={styles.projectCredits}>
@@ -76,11 +94,11 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
             <ProjectMediaCredit project={project} carouselIndex={carouselIndex} />
           </div>
         </div>
-        <ProjectNavigation
+        {/* <ProjectNavigation
           nextProject={nextProject}
           previousProject={previousProject}
           className={styles.projectNavigation}
-        />
+        /> */}
       </section>
       <FullscreenView
         activeIndex={fullscreenIndex}

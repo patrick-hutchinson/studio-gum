@@ -9,39 +9,28 @@ export default function ContactPage({ site }) {
   return (
     <div className={`${styles.page} page`}>
       <main className={`${styles.main} main`}>
-        <section className={styles.contactTextContainer} typo="body compensate-top">
-          <div>
+        <section className={styles.contactTextContainer} typo="tag">
+          <span className={styles.contactEntry}>
             <span className={styles.contactLabel} typo="label shift">
               (Address)
             </span>
             {site?.googleMaps ? (
-              <a href={site.googleMaps} target="_blank" typo="body">
+              <a href={site.googleMaps} target="_blank" typo="tag">
                 <SanityPreviewValue value={addressText} fieldTitle="Address" />
               </a>
             ) : (
-              <span typo="body">
+              <span typo="tag">
                 <SanityPreviewValue value={addressText} fieldTitle="Address" />
                 <SanityPreviewFallback as="span" fieldTitle="Google Maps link" />
               </span>
             )}
-          </div>
-          <div>
-            <span className={styles.contactLabel} typo="label shift">
-              (E—mail)
-            </span>
-            {site?.email ? (
-              <a href={`mailto:${site.email}`} typo="body">
-                {site.email}
-              </a>
-            ) : (
-              <SanityPreviewFallback as="span" fieldTitle="Email" />
-            )}
-          </div>
-          <div>
+          </span>
+          <br />
+          <span className={styles.contactEntry}>
             <span className={styles.contactLabel} typo="label shift">
               (Phone)
             </span>
-            <span typo="body">
+            <span typo="tag">
               {site?.phone?.length ? (
                 site.phone.map((entry, index) => {
                   return (
@@ -55,7 +44,23 @@ export default function ContactPage({ site }) {
                 <SanityPreviewFallback as="span" fieldTitle="Phone" />
               )}
             </span>
-            <span typo="body">
+          </span>
+
+          <span className={styles.contactEntry}>
+            <span className={styles.contactLabel} typo="label shift">
+              (E—mail)
+            </span>
+            {site?.email ? (
+              <a href={`mailto:${site.email}`} typo="tag">
+                {site.email}
+              </a>
+            ) : (
+              <SanityPreviewFallback as="span" fieldTitle="Email" />
+            )}
+          </span>
+
+          <span className={styles.contactEntry}>
+            <span typo="tag">
               {site?.socials?.length ? (
                 site.socials.map((entry, index) => {
                   return (
@@ -78,7 +83,7 @@ export default function ContactPage({ site }) {
                 <SanityPreviewFallback as="span" fieldTitle="Socials" />
               )}
             </span>
-          </div>
+          </span>
         </section>
       </main>
     </div>
