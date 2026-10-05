@@ -19,15 +19,23 @@
 
   --margin: var(--margin-7);
 
-  --shell-height: calc(100vh - (2 * var(--margin)));
+  --viewport-height: 100vh;
+  --shell-height: calc(var(--viewport-height) - (2 * var(--margin)));
   --content-width: calc(100vw - 2 * var(--margin));
 
   --header-height: var(--fs-3);
+  --menu-height: calc(var(--fs-3) + (2 * var(--margin)));
 
-  --content-height: calc(100vh - (3 * var(--margin)) - var(--header-height));
+  --content-height: calc(var(--viewport-height) - (3 * var(--margin)) - var(--header-height));
 
   --opacity: 0.4;
   --transtition: 0.4s ease-in-out;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
 }
 
 [data-theme="light"] {

@@ -41,7 +41,9 @@ const VideoCompose = ({
       <div ref={videoRef} className={styles.videoPlayer} style={{ aspectRatio: aspectRatio }}>
         {playVideo ? (
           <>
-            {showPlaceholder ? <Placeholder medium={medium} aspectRatio={aspectRatio} isLoaded={isLoaded} /> : null}
+            {showPlaceholder ? (
+              <Placeholder medium={medium} isLoaded={isLoaded} objectFit={objectFit} objectPosition={objectPosition} />
+            ) : null}
             <Video
               medium={medium}
               objectFit={objectFit}

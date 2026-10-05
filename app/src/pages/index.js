@@ -18,11 +18,8 @@ function ProjectInfo({ project }) {
     .filter(Boolean)
     .join(", ");
 
-  const medium = project.thumbnail?.medium;
-  const aspectRatio = medium.width / medium.height;
-
   return (
-    <div className={styles.projectInfo} style={{ aspectRatio: aspectRatio }}>
+    <div className={styles.projectInfo}>
       <span className={styles.categories} typo="label">
         {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
       </span>
@@ -37,6 +34,8 @@ function ProjectLink({ project }) {
   const medium = project.thumbnail?.medium;
   const href = project.slug?.current ? `/projects/${project.slug.current}` : null;
   const { canvasRef, elementRef, sampleColor } = useSampleColor(medium);
+  const aspectRatio = medium?.width && medium?.height ? `${medium.width} / ${medium.height}` : undefined;
+  const frameStyle = aspectRatio ? { aspectRatio } : undefined;
 
   const content = (
     <>
@@ -61,11 +60,11 @@ function ProjectLink({ project }) {
       onPointerMove={sampleColor}
     >
       {href ? (
-        <Link href={href} className={styles.projectLink}>
+        <Link href={href} className={styles.projectLink} style={frameStyle}>
           {content}
         </Link>
       ) : (
-        <div className={styles.projectLink}>
+        <div className={styles.projectLink} style={frameStyle}>
           {content}
           <SanityPreviewFallback fieldTitle="Project slug" />
         </div>

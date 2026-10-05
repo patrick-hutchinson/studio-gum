@@ -68,8 +68,8 @@
 
   .main {
     grid-template-rows: minmax(0, 1fr) auto;
-    height: var(--content-height);
-    max-height: var(--content-height);
+    height: calc(var(--content-height) - var(--menu-height));
+    max-height: calc(var(--content-height) - var(--menu-height));
     row-gap: var(--margin);
     min-height: 0;
 

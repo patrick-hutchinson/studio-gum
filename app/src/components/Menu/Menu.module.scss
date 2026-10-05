@@ -4,8 +4,8 @@
   left: 0px;
   // width: 100%;
   padding: var(--margin);
-  height: calc(var(--fs-3) + (2 * var(--margin)));
-  width: calc(var(--fs-3) + (2 * var(--margin)));
+  height: var(--menu-height);
+  width: var(--menu-height);
   min-width: 0;
   z-index: 10;
   background: var(--background);
@@ -87,5 +87,13 @@
     .selectedFilter {
       color: var(--focus);
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* phones */
+
+  .menuAnimation {
+    transform: translateY(calc(var(--fs-2) * 0.7));
   }
 }

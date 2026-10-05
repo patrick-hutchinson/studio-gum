@@ -9,7 +9,7 @@ const ImageCompose = ({ medium, className, eager = false, objectFit, objectPosit
 
   return (
     <div className={`${styles.mediaContainer} ${className}`}>
-      <Placeholder medium={medium} isLoaded={isLoaded} objectFit={objectFit} />
+      <Placeholder medium={medium} isLoaded={isLoaded} objectFit={objectFit} objectPosition={objectPosition} />
       <Image
         medium={medium}
         setIsLoaded={setIsLoaded}
