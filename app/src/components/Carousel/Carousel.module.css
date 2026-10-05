@@ -29,7 +29,7 @@
 .mediaCounter {
   position: absolute;
   bottom: var(--margin);
-  left: var(--margin);
+  right: var(--margin);
   z-index: 5;
   pointer-events: none;
   color: #fff;

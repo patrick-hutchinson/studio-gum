@@ -57,12 +57,16 @@
     flex-direction: row;
     text-transform: uppercase;
     justify-content: flex-end;
+    min-width: 0;
+    width: 100%;
 
     ul {
       display: flex;
       flex-wrap: wrap;
       justify-content: start;
       align-items: center;
+      min-width: 0;
+      max-width: 100%;
     }
 
     li:not(.menuReturn, :last-of-type)::after {
@@ -94,6 +98,34 @@
   /* phones */
 
   .menuAnimation {
-    transform: translateY(calc(var(--fs-2) * 0.7));
+    transform: translateY(calc(var(--fs-2) * 0.3));
+
+    .navigation {
+      font-size: var(--fs-4) !important;
+      line-height: var(--lh-4) !important;
+    }
+  }
+
+  .filters {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+
+    ul {
+      width: 100%;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap !important;
+
+      li {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+    }
   }
 }

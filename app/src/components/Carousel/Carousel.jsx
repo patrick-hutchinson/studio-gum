@@ -274,7 +274,7 @@ const Carousel = ({
         })}
       </div>
       {showCounter ? (
-        <div aria-live="polite" className={styles.mediaCounter} typo="marker">
+        <div aria-live="polite" className={styles.mediaCounter} typo="label">
           {activeIndex + 1}/{media.length}
         </div>
       ) : null}
