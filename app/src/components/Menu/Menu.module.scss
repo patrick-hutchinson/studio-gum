@@ -97,6 +97,14 @@
 @media screen and (max-width: 768px) {
   /* phones */
 
+  .menuButton {
+    width: calc(var(--fs-3) + 30px);
+    height: calc(var(--fs-3) + 30px);
+    padding: 15px;
+    margin: -15px;
+    object-fit: contain;
+  }
+
   .menuAnimation {
     transform: translateY(calc(var(--fs-2) * 0.3));
 
