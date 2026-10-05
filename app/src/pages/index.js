@@ -12,14 +12,15 @@ import { useMemo } from "react";
 
 const ALL_FILTER_ID = "all";
 
-function ProjectInfo({ project }) {
+function ProjectInfo({ aspectRatio, project }) {
   const categories = project.categories
     ?.map((category) => category.name)
     .filter(Boolean)
     .join(", ");
+  const infoStyle = aspectRatio ? { aspectRatio } : undefined;
 
   return (
-    <div className={styles.projectInfo}>
+    <div className={styles.projectInfo} style={infoStyle}>
       <span className={styles.categories} typo="label">
         {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
       </span>
@@ -35,7 +36,7 @@ function ProjectLink({ project }) {
   const href = project.slug?.current ? `/projects/${project.slug.current}` : null;
   const { canvasRef, elementRef, sampleColor } = useSampleColor(medium);
   const aspectRatio = medium?.width && medium?.height ? `${medium.width} / ${medium.height}` : undefined;
-  const frameStyle = aspectRatio ? { aspectRatio } : undefined;
+  const frameStyle = aspectRatio ? { "--project-aspect-ratio": aspectRatio, aspectRatio } : undefined;
 
   const content = (
     <>
@@ -44,7 +45,7 @@ function ProjectLink({ project }) {
       ) : (
         <SanityPreviewFallback className={styles.thumbnail} fieldTitle="Project thumbnail" />
       )}
-      <ProjectInfo project={project} />
+      <ProjectInfo aspectRatio={aspectRatio} project={project} />
     </>
   );
 

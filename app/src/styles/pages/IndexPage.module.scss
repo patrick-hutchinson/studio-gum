@@ -17,8 +17,10 @@
   .projectLink {
     position: relative;
     display: grid;
+    aspect-ratio: var(--project-aspect-ratio);
     color: inherit;
     text-decoration: none;
+    min-width: 0;
 
     .thumbnail,
     .projectInfo {
@@ -26,6 +28,8 @@
     }
 
     .thumbnail {
+      width: 100%;
+      height: 100%;
       transition: opacity 0.35s ease-in-out;
     }
 
