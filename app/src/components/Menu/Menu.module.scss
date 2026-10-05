@@ -107,13 +107,14 @@
   }
 
   .filters {
-    overflow: hidden;
+    // overflow: hidden;
+    --filter-button-offset: 30px;
     width: 100%;
     min-width: 0;
 
     ul {
-      width: 100%;
-      max-width: 100%;
+      width: calc(100% - var(--filter-button-offset));
+      max-width: none;
       white-space: nowrap;
       overflow-x: auto;
       overflow-y: hidden;
@@ -121,6 +122,9 @@
       justify-content: flex-start;
       -webkit-overflow-scrolling: touch;
       flex-wrap: nowrap !important;
+      margin-left: var(--filter-button-offset);
+      // padding-right: var(--filter-button-offset);
+      transform: translateY(calc(var(--fs-2) * -0.23));
 
       li {
         flex: 0 0 auto;
