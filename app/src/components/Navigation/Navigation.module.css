@@ -23,7 +23,7 @@
   .navigation ul {
     gap: var(--margin-6);
     justify-content: space-between;
-    padding-left: 50px;
+    padding-left: 30px;
     font-size: var(--fs-4);
     line-height: var(--fs-4);
   }
