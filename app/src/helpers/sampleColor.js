@@ -2,10 +2,15 @@ import { useCallback, useEffect, useRef } from "react";
 
 const COLOR_LERP_AMOUNT = 0.05;
 const COLOR_SETTLE_THRESHOLD = 0.35;
+const MINIMUM_PROJECT_BACKGROUND_COLOR = [0x53, 0x57, 0x5a];
 const PROJECT_BACKGROUND_PROPERTY = "--project-background";
 
 function formatRgb(color) {
   return `rgb(${Math.round(color[0])} ${Math.round(color[1])} ${Math.round(color[2])})`;
+}
+
+function capMinimumColor(color) {
+  return color.map((channel, index) => Math.max(channel, MINIMUM_PROJECT_BACKGROUND_COLOR[index]));
 }
 
 function getSamplePoint(event, element, imageSize) {
@@ -131,7 +136,7 @@ export function useSampleColor(medium) {
 
       try {
         const [red, green, blue] = context.getImageData(point.x, point.y, 1, 1).data;
-        targetColorRef.current = [red, green, blue];
+        targetColorRef.current = capMinimumColor([red, green, blue]);
         scheduleSmoothedColor();
       } catch {
         clearColor();

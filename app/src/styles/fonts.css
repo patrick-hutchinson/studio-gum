@@ -5,17 +5,17 @@
   --ps-2: 0rem;
 
   /* --fs-3: 2.2rem; */
-  --fs-3: clamp(1.8rem, 1.224rem + 0.678vw, 2.2rem);
+  --fs-3: clamp(1.65rem, 1.074rem + 0.678vw, 2.05rem);
   --lh-3: clamp(1.8rem, 1.224rem + 0.678vw, 2.2rem);
   --ls-3: 0;
   --ps-3: 0rem;
 
-  --fs-4: 1.6rem;
-  --lh-4: 1.6rem;
+  --fs-4: 1.3rem;
+  --lh-4: 1.4rem;
   --ls-4: 0;
   --ps-4: 0rem;
 
-  --fs-5: 0.8rem;
+  --fs-5: 0.9rem;
   --lh-5: 1;
   --ls-5: 0;
   --ps-5: 0rem;

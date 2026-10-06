@@ -63,9 +63,7 @@ const FullscreenView = ({ activeIndex, enableNavigation = false, gallery, onClos
         type="button"
         aria-label="Close fullscreen view"
         onClick={handleCloseClick}
-      >
-        <img src="/icons/plus.svg" alt="" aria-hidden="true" />
-      </button>
+      />
     </div>
   );
 };

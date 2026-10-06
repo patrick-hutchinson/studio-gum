@@ -9,7 +9,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  --project-background: #ff0000;
+  --project-background: transparent;
   overflow: hidden;
   display: grid;
   grid-column: span 2;
@@ -48,6 +48,10 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
+      .title {
+        margin-bottom: calc(var(--fs-3) * -0.15);
+      }
     }
   }
 }

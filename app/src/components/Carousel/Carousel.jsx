@@ -9,8 +9,6 @@ import { motion } from "framer-motion";
 
 import { DeviceContext } from "@/context/DeviceContext";
 
-const AUTO_SCROLL_DELAY = 3000;
-const MINIMUM_PAUSE_DURATION = 10000;
 const INFINITE_REPEAT_BUFFER = 2;
 const MINIMUM_INFINITE_REPEAT_COUNT = 3;
 
@@ -31,7 +29,6 @@ function getMediumAspectRatio(medium) {
 
 const Carousel = ({
   array,
-  autoScrollDelay = AUTO_SCROLL_DELAY,
   className = "",
   contained = false,
   fitMediaToBounds = false,
@@ -40,7 +37,6 @@ const Carousel = ({
   showCounter = true,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [cursorState, setCursorState] = useState({
     direction: "next",
     isVisible: false,
@@ -49,8 +45,6 @@ const Carousel = ({
   });
   const { isDesktop } = useContext(DeviceContext);
   const carouselOuterRef = useRef(null);
-  const pauseUntilRef = useRef(0);
-  const dragStartedRef = useRef(false);
   const baseMedia = useMemo(() => array ?? [], [array]);
   const [repeatCount, setRepeatCount] = useState(1);
   const media = useMemo(() => {
@@ -87,10 +81,10 @@ const Carousel = ({
     const updateRepeatCount = () => {
       const slides = Array.from(carousel.querySelectorAll("[data-carousel-slide]"));
       const firstCycle = slides.slice(0, baseMedia.length);
+      const carouselInner = carousel.querySelector("[data-carousel-inner]");
+      const columnGap = carouselInner ? Number.parseFloat(window.getComputedStyle(carouselInner).columnGap) || 0 : 0;
       const cycleWidth = firstCycle.reduce((total, slide) => {
-        const marginRight = Number.parseFloat(window.getComputedStyle(slide).marginRight) || 0;
-
-        return total + slide.getBoundingClientRect().width + marginRight;
+        return total + slide.getBoundingClientRect().width + columnGap;
       }, 0);
 
       if (cycleWidth <= 0 || carousel.clientWidth <= 0) return;
@@ -112,20 +106,6 @@ const Carousel = ({
     return () => resizeObserver.disconnect();
   }, [baseMedia, infinite, repeatCount]);
 
-  const pauseAutoScroll = useCallback((duration = MINIMUM_PAUSE_DURATION) => {
-    pauseUntilRef.current = Math.max(pauseUntilRef.current, Date.now() + duration);
-  }, []);
-
-  const pauseForActiveVideo = useCallback(() => {
-    if (!emblaApi) return;
-
-    const activeMedium = media[emblaApi.selectedScrollSnap()]?.medium;
-    if (activeMedium?.type !== "video") return;
-
-    const videoDuration = Number(activeMedium.duration) * 1000;
-    pauseAutoScroll(Math.max(MINIMUM_PAUSE_DURATION, Number.isFinite(videoDuration) ? videoDuration : 0));
-  }, [emblaApi, media, pauseAutoScroll]);
-
   useEffect(() => {
     if (!emblaApi || !media.length) return;
 
@@ -137,17 +117,14 @@ const Carousel = ({
     };
 
     updateIndex();
-    pauseForActiveVideo();
     emblaApi.on("select", updateIndex);
     emblaApi.on("scroll", updateIndex);
-    emblaApi.on("select", pauseForActiveVideo);
 
     return () => {
       emblaApi.off("select", updateIndex);
       emblaApi.off("scroll", updateIndex);
-      emblaApi.off("select", pauseForActiveVideo);
     };
-  }, [baseMedia.length, emblaApi, media.length, onIndexChange, pauseForActiveVideo]);
+  }, [baseMedia.length, emblaApi, media.length, onIndexChange]);
 
   useEffect(() => {
     if (!emblaApi || media.length < 2) return;
@@ -155,13 +132,11 @@ const Carousel = ({
     const handleKeyDown = (e) => {
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        pauseAutoScroll();
         emblaApi.scrollNext();
       }
 
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        pauseAutoScroll();
         emblaApi.scrollPrev();
       }
     };
@@ -171,31 +146,7 @@ const Carousel = ({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [emblaApi, pauseAutoScroll]);
-
-  useEffect(() => {
-    if (!emblaApi || isDesktop) return;
-
-    const onDragStart = () => {
-      dragStartedRef.current = true;
-      setIsDragging(true);
-    };
-    const onDragEnd = () => {
-      if (dragStartedRef.current) pauseAutoScroll();
-      dragStartedRef.current = false;
-      setIsDragging(false);
-    };
-
-    emblaApi.on("pointerDown", onDragStart);
-    emblaApi.on("pointerUp", onDragEnd);
-    emblaApi.on("dragEnd", onDragEnd);
-
-    return () => {
-      emblaApi.off("pointerDown", onDragStart);
-      emblaApi.off("pointerUp", onDragEnd);
-      emblaApi.off("dragEnd", onDragEnd);
-    };
-  }, [emblaApi, isDesktop, pauseAutoScroll]);
+  }, [emblaApi, media.length]);
 
   const handleDesktopClick = useCallback(
     (event) => {
@@ -205,7 +156,6 @@ const Carousel = ({
       if (interactiveTarget) return;
 
       const { left, width } = event.currentTarget.getBoundingClientRect();
-      pauseAutoScroll();
 
       if (event.clientX - left < width / 2) {
         emblaApi.scrollPrev();
@@ -214,7 +164,7 @@ const Carousel = ({
 
       emblaApi.scrollNext();
     },
-    [emblaApi, isDesktop, media.length, pauseAutoScroll],
+    [emblaApi, isDesktop, media.length],
   );
 
   const updateCursor = useCallback(
@@ -235,18 +185,6 @@ const Carousel = ({
     setCursorState((currentState) => ({ ...currentState, isVisible: false }));
   }, []);
 
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    const interval = setInterval(() => {
-      if (!isDragging && Date.now() >= pauseUntilRef.current) {
-        emblaApi.scrollNext();
-      }
-    }, autoScrollDelay);
-
-    return () => clearInterval(interval);
-  }, [autoScrollDelay, emblaApi, isDragging, media.length]);
-
   if (!media.length) return null;
 
   return (
@@ -257,7 +195,7 @@ const Carousel = ({
       onPointerMove={updateCursor}
       ref={setCarouselRefs}
     >
-      <div className={`${styles.carouselInner}`}>
+      <div className={`${styles.carouselInner}`} data-carousel-inner>
         {media.map((item, index) => {
           const aspectRatio = getMediumAspectRatio(item.medium);
           const isPortrait = aspectRatio && aspectRatio < 1;
@@ -280,11 +218,11 @@ const Carousel = ({
         </div>
       ) : null}
       {isDesktop && media.length > 1 ? (
-        <img
-          alt=""
+        <span
           aria-hidden="true"
-          className={`${styles.carouselCursor} ${cursorState.isVisible ? styles.carouselCursorVisible : ""}`}
-          src={cursorState.direction === "previous" ? "/icons/arrow-left.svg" : "/icons/arrow-right.svg"}
+          className={`${styles.carouselCursor} ${
+            cursorState.direction === "previous" ? styles.carouselCursorPrevious : styles.carouselCursorNext
+          } ${cursorState.isVisible ? styles.carouselCursorVisible : ""}`}
           style={{
             transform: `translate3d(${cursorState.x}px, ${cursorState.y}px, 0) translate(-50%, -50%)`,
           }}

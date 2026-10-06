@@ -105,10 +105,11 @@ function getAllowedLandingRanges(min, max, width, blockedBounds) {
   ].filter(([rangeMin, rangeMax]) => rangeMax >= rangeMin);
 }
 
-const LogoInteraction = ({ menuButtonRef, onIntroComplete, runIntro = false }) => {
+const LogoInteraction = ({ menuButtonRef, onIntroComplete, routeKey, runIntro = false }) => {
   const letterRefs = useRef([]);
   const animationTimeoutRefs = useRef([]);
   const introTimeoutRefs = useRef([]);
+  const previousRouteKeyRef = useRef(routeKey);
   const [letterPositions, setLetterPositions] = useState([]);
   const [animatingLetterIndexes, setAnimatingLetterIndexes] = useState([]);
   const [isIntroVisible, setIsIntroVisible] = useState(!runIntro);
@@ -299,6 +300,21 @@ const LogoInteraction = ({ menuButtonRef, onIntroComplete, runIntro = false }) =
       animationTimeoutRefs.current.forEach((timeout) => window.clearTimeout(timeout));
     };
   }, [clampPositions, createInitialPositions, getLetterMetrics, moveAwayFromMenuButton, onIntroComplete, runIntro]);
+
+  useLayoutEffect(() => {
+    if (previousRouteKeyRef.current === routeKey) return;
+
+    previousRouteKeyRef.current = routeKey;
+    if (runIntro) return;
+
+    animationTimeoutRefs.current.forEach((timeout) => window.clearTimeout(timeout));
+    setAnimatingLetterIndexes(LETTERS.map((_, index) => index));
+    setLetterPositions(moveAwayFromMenuButton(clampPositions(createInitialPositions())));
+
+    animationTimeoutRefs.current[LETTERS.length] = window.setTimeout(() => {
+      setAnimatingLetterIndexes([]);
+    }, LETTER_TRANSITION_DURATION);
+  }, [clampPositions, createInitialPositions, moveAwayFromMenuButton, routeKey, runIntro]);
 
   const setLetterIsAnimating = useCallback((letterIndex) => {
     window.clearTimeout(animationTimeoutRefs.current[letterIndex]);

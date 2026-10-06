@@ -2,13 +2,13 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--margin);
-  // row-gap: var(--margin);
+  row-gap: var(--margin);
 
   .video {
     position: relative;
     width: 100%;
     height: auto;
-    --project-background: #ff0000;
+    --project-background: transparent;
     overflow: hidden;
     display: grid;
     grid-column: span 4;

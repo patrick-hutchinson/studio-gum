@@ -22,6 +22,7 @@
 
 .carouselInner {
   display: flex;
+  column-gap: var(--margin);
   touch-action: pan-y pinch-zoom;
 }
 
@@ -87,11 +88,23 @@
   left: 0;
   z-index: 10;
   height: calc(var(--fs-3) * 1);
-  width: auto;
+  width: calc(var(--fs-3) * 0.566);
+  background-color: var(--focus);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease-in-out;
   will-change: transform;
+}
+
+.carouselCursorPrevious {
+  mask-image: url("/icons/arrow-left.svg");
+}
+
+.carouselCursorNext {
+  mask-image: url("/icons/arrow-right.svg");
 }
 
 .carouselCursorVisible {

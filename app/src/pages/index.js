@@ -24,7 +24,7 @@ function ProjectInfo({ aspectRatio, project }) {
       <span className={styles.categories} typo="label">
         {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
       </span>
-      <span typo="body">
+      <span className={styles.title} typo="body">
         <SanityPreviewValue value={project.title} fieldTitle="Project title" />
       </span>
     </div>

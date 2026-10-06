@@ -115,6 +115,7 @@ export default function App({ Component, pageProps }) {
             <div ref={shellRef} className={styles.shell}>
               <LogoInteraction
                 menuButtonRef={menuButtonRef}
+                routeKey={router.asPath}
                 runIntro={shouldRunIndexIntroRef.current}
                 onIntroComplete={completeIndexIntro}
               />
