@@ -21,7 +21,6 @@
 }
 
 .carouselInner {
-  --carousel-slide-overlap: 0px;
   display: flex;
   touch-action: pan-y pinch-zoom;
 }
@@ -38,9 +37,6 @@
 
 .slide {
   flex: 0 0 auto;
-
-  /* The negative end margin is included in Embla's measured track width, including the loop boundary. */
-  margin-right: calc(var(--margin-page, 0px) - var(--carousel-slide-overlap));
 }
 
 .carouselFullscreen .slide {

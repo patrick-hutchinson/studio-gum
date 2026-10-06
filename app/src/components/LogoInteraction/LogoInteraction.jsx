@@ -367,7 +367,7 @@ const LogoInteraction = ({ menuButtonRef, onIntroComplete, runIntro = false }) =
           style={{ left: letterPositions[index] ?? 0 }}
           onPointerEnter={() => randomizeLetterPosition(index)}
         >
-          <RenderSVG text={letter} className={styles.logoLetter} />
+          <RenderSVG text={letter} className={styles.logoLetter} padding={20} />
         </span>
       ))}
     </div>
