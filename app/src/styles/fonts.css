@@ -83,7 +83,7 @@
 }
 
 [typo~="shift"] {
-  transform: translateY(calc(-0.17 * var(--fs-4)));
+  transform: translateY(calc(-0.21 * var(--fs-4)));
 }
 
 [typo~="label"] p {
