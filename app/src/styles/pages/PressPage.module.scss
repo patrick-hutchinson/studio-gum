@@ -34,14 +34,20 @@
   /* phones */
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
-  /* short landscape */
-}
-
-@media screen and (max-width: 1279px) {
+@media screen and (min-width: 769px) and (max-width: 1020px) {
   /* tablets */
+  .main {
+    .cover {
+      grid-column: span 4;
+    }
+  }
 }
 
-@media screen and (min-width: 2560px) {
-  /* large screens */
+@media screen and (min-width: 1021px) and (max-width: 1279px) {
+  /* tablets */
+  .main {
+    .cover {
+      grid-column: span 3;
+    }
+  }
 }

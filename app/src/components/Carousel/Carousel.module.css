@@ -6,7 +6,7 @@
   margin-left: calc(50% - 50vw);
   user-select: none;
   overflow: hidden;
-  touch-action: manipulation;
+  touch-action: pan-y pinch-zoom;
   /* overscroll-behavior: contain; */
 }
 
@@ -23,7 +23,7 @@
 .carouselInner {
   --carousel-slide-overlap: 0px;
   display: flex;
-  touch-action: manipulation;
+  touch-action: pan-y pinch-zoom;
 }
 
 .mediaCounter {

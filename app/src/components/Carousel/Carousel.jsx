@@ -58,16 +58,17 @@ const Carousel = ({
 
     return infinite && items.length ? Array.from({ length: repeatCount }, () => items).flat() : items;
   }, [baseMedia, infinite, repeatCount]);
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
+  const emblaOptions = useMemo(
+    () => ({
       align: "start",
-      watchDrag: false,
+      watchDrag: !isDesktop,
       dragResistance: 1,
       dragFree: false,
       loop: media.length > 1,
-    },
-    [],
+    }),
+    [isDesktop, media.length],
   );
+  const [emblaRef, emblaApi] = useEmblaCarousel(emblaOptions, []);
 
   const setCarouselRefs = useCallback(
     (node) => {

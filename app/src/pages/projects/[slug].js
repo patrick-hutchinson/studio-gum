@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 import FullscreenView from "@/components/FullscreenView/FullscreenView";
 import SanityPreviewFallback, { SanityPreviewValue } from "@/components/SanityPreviewFallback";
@@ -7,12 +7,11 @@ import { getProject, getProjectSlugs, getProjects, getSite } from "@/lib/sanity"
 
 import ProjectCredits from "@/components/Project/ProjectCredits";
 
-import ProjectNavigation from "@/components/Project/ProjectNavigation";
-
 import Carousel from "@/components/Carousel/Carousel";
 import styles from "@/styles/pages/ProjectPage.module.scss";
 
 import ProjectMediaCredit from "@/components/Project/ProjectMediaCredit";
+import { DeviceContext } from "@/context/DeviceContext";
 
 function getProjectSlug(project) {
   return project?.slug?.current || project?.slug;
@@ -39,6 +38,8 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
   const gallery = project.gallery || {};
   const galleryMedia = gallery.media || [];
 
+  const { isMobile } = useContext(DeviceContext);
+
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const navigateFullscreen = useCallback(
@@ -59,7 +60,7 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
       .join(", ");
 
     return (
-      <div className={styles.projectTitle} typo="body compensate-top">
+      <div className={styles.projectTitle} typo={isMobile ? "body" : "body compensate-top"}>
         <span className={styles.categories} typo="label">
           {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
         </span>
