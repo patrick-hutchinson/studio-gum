@@ -94,6 +94,25 @@
   }
 }
 
+.navigation ul {
+  display: flex;
+  gap: var(--margin-6);
+  justify-content: flex-end;
+}
+
+.navigation li {
+  display: inline-flex;
+}
+
+.navigation button {
+  all: unset;
+  cursor: pointer;
+}
+
+.activeLink {
+  color: var(--focus);
+}
+
 @media screen and (max-width: 768px) {
   /* phones */
 
@@ -106,12 +125,7 @@
   }
 
   .menuAnimation {
-    transform: translateY(calc(var(--fs-2) * 0.3));
-
-    .navigation {
-      font-size: var(--fs-4) !important;
-      line-height: var(--lh-4) !important;
-    }
+    transform: translateY(calc(var(--fs-2) * 0.05));
   }
 
   .filters {
@@ -131,8 +145,30 @@
       -webkit-overflow-scrolling: touch;
       flex-wrap: nowrap !important;
       margin-left: var(--filter-button-offset);
-      // padding-right: var(--filter-button-offset);
-      transform: translateY(calc(var(--fs-2) * -0.23));
+
+      li {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .navigation {
+    // overflow: hidden;
+    --filter-button-offset: 30px;
+    width: 100%;
+    min-width: 0;
+    ul {
+      width: calc(100% - var(--filter-button-offset));
+      max-width: none;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap !important;
+      margin-left: var(--filter-button-offset);
 
       li {
         flex: 0 0 auto;

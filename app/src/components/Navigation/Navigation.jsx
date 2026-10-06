@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 
-import styles from "./Navigation.module.css";
+import styles from "../Menu/Menu.module.scss";
 
 const navigationItemVariants = {
   initial: { opacity: 0 },

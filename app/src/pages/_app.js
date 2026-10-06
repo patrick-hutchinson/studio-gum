@@ -48,8 +48,15 @@ export default function App({ Component, pageProps }) {
   const menuButtonRef = useRef(null);
 
   const [exitingPageBox, setExitingPageBox] = useState(null);
+  const shouldRunIndexIntroRef = useRef(router.pathname === "/");
+  const [isIndexIntroComplete, setIsIndexIntroComplete] = useState(!shouldRunIndexIntroRef.current);
 
   const [selectedFilters, setSelectedFilters] = useState([ALL_FILTER_ID]);
+
+  const completeIndexIntro = useCallback(() => {
+    shouldRunIndexIntroRef.current = false;
+    setIsIndexIntroComplete(true);
+  }, []);
 
   const toggleFilter = useCallback((filterId) => {
     setSelectedFilters((currentFilters) => {
@@ -106,34 +113,46 @@ export default function App({ Component, pageProps }) {
         <ViewportProvider>
           <DeviceProvider>
             <div ref={shellRef} className={styles.shell}>
-              <LogoInteraction menuButtonRef={menuButtonRef} />
-
-              <Menu
-                categories={pageProps.categories || []}
+              <LogoInteraction
                 menuButtonRef={menuButtonRef}
-                selectedFilters={selectedFilters}
-                onToggleFilter={toggleFilter}
+                runIntro={shouldRunIndexIntroRef.current}
+                onIntroComplete={completeIndexIntro}
               />
 
-              <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
-                <MarginDebugOverlay />
+              <motion.div
+                animate={{ opacity: isIndexIntroComplete ? 1 : 0 }}
+                className={styles.pageChrome}
+                initial={false}
+                style={{ pointerEvents: isIndexIntroComplete ? "auto" : "none" }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              >
+                <Menu
+                  categories={pageProps.categories || []}
+                  menuButtonRef={menuButtonRef}
+                  selectedFilters={selectedFilters}
+                  onToggleFilter={toggleFilter}
+                />
 
-                <AnimatePresence custom={exitingPageBox} initial={false}>
-                  <motion.div
-                    animate="animate"
-                    className="pageTransition"
-                    custom={exitingPageBox}
-                    exit="exit"
-                    initial="initial"
-                    key={router.asPath}
-                    ref={pageTransitionRef}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    variants={pageTransitionVariants}
-                  >
-                    <Component {...pageProps} selectedFilters={selectedFilters} />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                <div ref={contentRef} className={`${styles.content} pageTransitionRoot`}>
+                  <MarginDebugOverlay />
+
+                  <AnimatePresence custom={exitingPageBox} initial={false}>
+                    <motion.div
+                      animate="animate"
+                      className="pageTransition"
+                      custom={exitingPageBox}
+                      exit="exit"
+                      initial="initial"
+                      key={router.asPath}
+                      ref={pageTransitionRef}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      variants={pageTransitionVariants}
+                    >
+                      <Component {...pageProps} selectedFilters={selectedFilters} />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
             </div>
           </DeviceProvider>
         </ViewportProvider>
