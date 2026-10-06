@@ -59,7 +59,7 @@ export default function ProjectPage({ nextProject, previousProject, project }) {
       .join(", ");
 
     return (
-      <div className={styles.projectTitle}>
+      <div className={styles.projectTitle} typo="body compensate-top">
         <span className={styles.categories} typo="label">
           {categories ? `(${categories})` : <SanityPreviewFallback as="span" fieldTitle="Project categories" />}
         </span>
