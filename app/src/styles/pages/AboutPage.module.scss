@@ -47,6 +47,10 @@
   }
 }
 
+.mainOverflowing {
+  padding-bottom: var(--header-height);
+}
+
 /* desktop is default */
 
 @media screen and (max-width: 768px) {
