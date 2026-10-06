@@ -51,7 +51,7 @@
         text-transform: uppercase;
 
         .categories {
-          transform: translateY(calc(-0.33 * var(--fs-2)));
+          transform: translateY(calc(-0.25 * var(--fs-2)));
           margin-right: var(--margin-7);
         }
       }
