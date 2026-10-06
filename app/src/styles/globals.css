@@ -24,7 +24,7 @@
   --content-width: calc(100vw - 2 * var(--margin));
 
   --header-height: var(--fs-3);
-  --menu-height: calc(var(--fs-3) + (2 * var(--margin)));
+  --menu-height: calc(var(--fs-2) + (2 * var(--margin)));
 
   --content-height: calc(var(--viewport-height) - (3 * var(--margin)) - var(--header-height));
 

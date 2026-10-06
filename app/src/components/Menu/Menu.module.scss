@@ -16,8 +16,8 @@
 }
 
 .menuButton {
-  width: calc(var(--fs-3) * 1);
-  height: calc(var(--fs-3) * 1);
+  width: calc(var(--fs-2) * 1);
+  height: calc(var(--fs-2) * 1);
   cursor: pointer;
 
   z-index: 10;
@@ -47,7 +47,7 @@
 }
 
 .menuAnimation {
-  transform: translateY(calc(var(--fs-2) * 0.15));
+  transform: translateY(calc(var(--fs-2) * 0.35));
   position: relative;
   width: 100%;
   height: 100%;
@@ -129,15 +129,16 @@
   /* phones */
 
   .menuButton {
-    // width: calc(var(--fs-3) + 30px);
-    // height: calc(var(--fs-3) + 30px);
+    width: calc(var(--fs-2) + 0px);
+    height: calc(var(--fs-2) + 0px);
+    transform: translateY(calc(var(--fs-2) * 0.1));
     padding: 15px;
     margin: -15px;
   }
 
   .menuButtonIcon {
-    width: var(--fs-3);
-    height: var(--fs-3);
+    width: var(--fs-2);
+    height: var(--fs-2);
   }
 
   .menuButton:hover .menuButtonIcon {
@@ -145,7 +146,7 @@
   }
 
   .menuAnimation {
-    transform: translateY(calc(var(--fs-2) * 0.05));
+    transform: translateY(calc(var(--fs-2) * 0.25));
   }
 
   .filters {
