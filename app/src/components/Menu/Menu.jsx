@@ -90,7 +90,9 @@ const Menu = ({ categories = [], menuButtonRef, selectedFilters = [ALL_FILTER_ID
 
   return (
     <div className={`${styles.menu} ${isExpanded ? styles.showMenu : null}`}>
-      <button className={styles.menuButton} ref={menuButtonRef} type="button" aria-label="Toggle menu" onClick={toggleMenu} />
+      <button className={styles.menuButton} ref={menuButtonRef} type="button" aria-label="Toggle menu" onClick={toggleMenu}>
+        <span className={styles.menuButtonIcon} aria-hidden="true" />
+      </button>
       <AnimatePresence>
         {showNavigation && (
           <motion.div key="menu" className={styles.menuAnimation}>
