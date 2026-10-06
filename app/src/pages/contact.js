@@ -30,20 +30,18 @@ export default function ContactPage({ site }) {
             <span className={styles.contactLabel} typo="label shift">
               (Phone)
             </span>
-            <span typo="tag">
-              {site?.phone?.length ? (
-                site.phone.map((entry, index) => {
-                  return (
-                    <span key={index}>
-                      {entry}
-                      <br />
-                    </span>
-                  );
-                })
-              ) : (
-                <SanityPreviewFallback as="span" fieldTitle="Phone" />
-              )}
-            </span>
+            {site?.phone?.length ? (
+              site.phone.map((entry, index) => {
+                return (
+                  <span style={{ display: "inline-block", marginRight: "var(--margin-6)" }} typo="tag" key={index}>
+                    {entry}
+                  </span>
+                );
+              })
+            ) : (
+              <SanityPreviewFallback as="span" fieldTitle="Phone" />
+            )}
+            <br />
           </span>
 
           <span className={styles.contactEntry}>

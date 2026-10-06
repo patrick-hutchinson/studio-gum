@@ -10,8 +10,8 @@
   --ls-3: 0;
   --ps-3: 0rem;
 
-  --fs-4: 1.3rem;
-  --lh-4: 1.4rem;
+  --fs-4: 1.35rem;
+  --lh-4: 1.45rem;
   --ls-4: 0;
   --ps-4: 0rem;
 
@@ -83,7 +83,7 @@
 }
 
 [typo~="shift"] {
-  transform: translateY(calc(-0.25 * var(--fs-4)));
+  transform: translateY(calc(-0.17 * var(--fs-4)));
 }
 
 [typo~="label"] p {
